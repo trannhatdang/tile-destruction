@@ -5,21 +5,13 @@ using UnityEngine;
 public class Tile : MonoBehaviour
 {
 	// Start is called before the first frame update
-	[SerializeField] RelativeJoint2D m_joint;
+	[SerializeField] FixedJoint2D m_joint;
 	
 	[SerializeField] float m_hp = 100;
 	[SerializeField] bool m_isParent = false;
 	void Start()
 	{
-		m_joint = gameObject.GetComponent<RelativeJoint2D>();
-		if(transform.parent == null)
-		{
-			m_isParent = true;
-		}
-		else
-		{
-			m_isParent = false;
-		}
+		m_joint = gameObject.GetComponent<FixedJoint2D>();
 	}
 
 	// Update is called once per frame
@@ -27,9 +19,7 @@ public class Tile : MonoBehaviour
 	{
 		if(m_hp <= 0 && !m_isParent)
 		{
-			transform.parent = transform.parent.parent;
 			m_isParent = true;
-			m_joint.enabled = false;
 		}
 
 		m_joint.enabled = !m_isParent;

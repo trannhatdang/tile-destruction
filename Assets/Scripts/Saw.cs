@@ -21,8 +21,12 @@ public class Saw : MonoBehaviour
 		transform.Rotate(0, 0, 1 * m_speed);
 	}
 
-	void OnCollisionEnter2D(Collision2D other)
+	void OnCollisionStay2D(Collision2D other)
 	{
+		if(other.gameObject.CompareTag("Tile"))
+		{
+			other.gameObject.GetComponent<Tile>().Hit(m_damage);
+		}
 
 	}
 }
