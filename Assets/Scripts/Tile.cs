@@ -5,16 +5,16 @@ using UnityEngine;
 public class Tile : MonoBehaviour
 {
 	// Start is called before the first frame update
-	[SerializeField] Rigidbody2D m_rb;
+	[SerializeField] RelativeJoint2D m_joint;
 	
 	[SerializeField] float m_hp = 100;
 	[SerializeField] bool m_isParent = false;
 	void Start()
 	{
+		m_joint = gameObject.GetComponent<RelativeJoint2D>();
 		if(transform.parent == null)
 		{
 			m_isParent = true;
-			gameObject.AddComponent<Rigidbody2D>();
 		}
 		else
 		{
@@ -29,12 +29,19 @@ public class Tile : MonoBehaviour
 		{
 			transform.parent = transform.parent.parent;
 			m_isParent = true;
-			gameObject.AddComponent<Rigidbody2D>();
+			m_joint.enabled = false;
 		}
+
+		m_joint.enabled = !m_isParent;
 	}
 
 	public void Hit(float damage)
 	{
 		m_hp -= damage;
+	}
+
+	void OnMouseUpAsButton()
+	{
+		Hit(25);
 	}
 }
