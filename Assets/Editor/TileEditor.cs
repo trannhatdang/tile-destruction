@@ -6,9 +6,12 @@ using System.Collections.Generic;
 public class TileEditor : EditorWindow
 {
 	private VisualElement m_topPane;
+	private VisualElement m_toptopPane;
+	private VisualElement m_topbotPane;
 	private VisualElement m_bottomPane;
 
 	private TextField m_nameField;
+	private EnumField m_colorField;
 
 	private Tile m_selectedTile;
 	private TileColor m_currColor;
@@ -29,13 +32,24 @@ public class TileEditor : EditorWindow
 		}
 
 		GameObject selectedGB = new GameObject();
-		m_selectedTile = selectedGB.AddComponent<Tile>();
+		selectedGB.name = m_name;
 
-		ScriptableObject tile = ScriptableObject.CreateInstance(typeof(TileSO));
+		m_selectedTile = selectedGB.AddComponent<Tile>();
+		selectedGB.AddComponent<SpriteRenderer>().sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_currColor));
+		selectedGB.AddComponent<Rigidbody2D>();
+		selectedGB.AddComponent<BoxCollider2D>();
+		selectedGB.AddComponent<RelativeJoint2D>();
+
+		ScriptableObject tile = ScriptableObject.CreateInstance(typeof(TileObjectSO));
 		AssetDatabase.CreateAsset(tile, "Assets/ScriptableObjects/Objects/" + m_name + ".asset");
-		m_selectedTile.TileInfo = (TileSO)tile;
+		m_selectedTile.TileObject = (TileObjectSO)tile;
+		((TileObjectSO)tile).HeadTile = new TileInfo(null, null, null, null, Vector2.zero);
 
 		m_selectedTile.Color = m_currColor;
+
+		m_selectedTile.Position = Vector2.zero;
+
+		Selection.activeGameObject = m_selectedTile.gameObject;
 	}
 
 	void save()
@@ -50,22 +64,26 @@ public class TileEditor : EditorWindow
 
 	void upButton()
 	{
-
+		m_selectedTile = m_selectedTile.TopTile;
+		Selection.activeGameObject = m_selectedTile.gameObject;
 	}
 
 	void downButton()
 	{
-
-	}	
+		m_selectedTile = m_selectedTile.DownTile;
+		Selection.activeGameObject = m_selectedTile.gameObject;
+	}
 
 	void leftButton()
 	{
-
+		m_selectedTile = m_selectedTile.LeftTile;
+		Selection.activeGameObject = m_selectedTile.gameObject;
 	}
 
 	void rightButton()
 	{
-
+		m_selectedTile = m_selectedTile.RightTile;
+		Selection.activeGameObject = m_selectedTile.gameObject;
 	}
 
 	[MenuItem("Deng/Tile Editor")]
@@ -85,29 +103,39 @@ public class TileEditor : EditorWindow
 		root.Add(splitView);
 
 		m_topPane = new VisualElement();
-		m_topPane.style.flexDirection = FlexDirection.Row;
+		m_topPane.style.flexDirection = FlexDirection.Column;
 		splitView.Add(m_topPane);
 		m_bottomPane = new VisualElement();
 		splitView.Add(m_bottomPane);
 
+		m_toptopPane = new VisualElement();
+		m_toptopPane.style.flexDirection = FlexDirection.Row;
+		m_topbotPane = new VisualElement();
+
+		m_topPane.Add(m_toptopPane);
+		m_topPane.Add(m_topbotPane);
+
 		m_nameField = new TextField();
 		m_nameField.style.flexGrow = 1;
 		m_nameField.value = m_name;
-		m_topPane.Add(m_nameField);
+		m_toptopPane.Add(m_nameField);
 
 		// Create Save button
 		Button saveButton = new Button();
 		saveButton.name = "Save";
 		saveButton.text = "Save";
 		saveButton.RegisterCallback<MouseUpEvent>((evt) => save());
-		m_topPane.Add(saveButton);
+		m_toptopPane.Add(saveButton);
 
 		// Create Load button
 		Button loadButton = new Button();
 		loadButton.name = "Load";
 		loadButton.text = "Load";
 		loadButton.RegisterCallback<MouseUpEvent>((evt) => load());
-		m_topPane.Add(loadButton);
+		m_toptopPane.Add(loadButton);
+
+		m_colorField = new EnumField();
+		m_topbotPane.Add(m_colorField);
 
 		m_createGBButton = new Button();
 		m_createGBButton.name = "Create Game Object";
@@ -148,7 +176,7 @@ public class TileEditor : EditorWindow
 	{
 		if(m_selectedTile)
 		{
-			m_name = m_selectedTile.TileInfo.Name;
+			m_name = m_selectedTile.TileObject.Name;
 		}
 		else
 		{

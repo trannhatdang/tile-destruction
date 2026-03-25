@@ -524,7 +524,8 @@ MonoBehaviour:
   m_left: {fileID: 0}
   m_right: {fileID: 0}
   m_top: {fileID: 0}
-  m_bottom: {fileID: 0}
+  m_down: {fileID: 0}
+  m_pos: {x: 0, y: 0}
   m_col: 0
   m_joint: {fileID: 0}
   m_spr: {fileID: 0}
@@ -895,7 +896,8 @@ MonoBehaviour:
   m_left: {fileID: 0}
   m_right: {fileID: 0}
   m_top: {fileID: 0}
-  m_bottom: {fileID: 0}
+  m_down: {fileID: 0}
+  m_pos: {x: 0, y: 0}
   m_col: 0
   m_joint: {fileID: 0}
   m_spr: {fileID: 0}
@@ -1008,7 +1010,8 @@ MonoBehaviour:
   m_left: {fileID: 0}
   m_right: {fileID: 0}
   m_top: {fileID: 0}
-  m_bottom: {fileID: 0}
+  m_down: {fileID: 0}
+  m_pos: {x: 0, y: 0}
   m_col: 0
   m_joint: {fileID: 0}
   m_spr: {fileID: 0}
@@ -1299,7 +1302,8 @@ MonoBehaviour:
   m_left: {fileID: 0}
   m_right: {fileID: 0}
   m_top: {fileID: 0}
-  m_bottom: {fileID: 0}
+  m_down: {fileID: 0}
+  m_pos: {x: 0, y: 0}
   m_col: 0
   m_joint: {fileID: 0}
   m_spr: {fileID: 0}
@@ -1499,7 +1503,8 @@ MonoBehaviour:
   m_left: {fileID: 0}
   m_right: {fileID: 0}
   m_top: {fileID: 0}
-  m_bottom: {fileID: 0}
+  m_down: {fileID: 0}
+  m_pos: {x: 0, y: 0}
   m_col: 0
   m_joint: {fileID: 0}
   m_spr: {fileID: 0}
