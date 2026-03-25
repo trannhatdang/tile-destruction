@@ -5,6 +5,13 @@ public class Utils
 	public static T LoadAsset<T>(string name)
 		where T : UnityEngine.Object
 	{
-		return AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets(name)[0]));
+		var guid = AssetDatabase.FindAssets(name);
+
+		if(guid.Length == 0)
+		{
+			return null;
+		}
+
+		return AssetDatabase.LoadAssetAtPath<T>(AssetDatabase.GUIDToAssetPath(guid[0]));
 	}
 }

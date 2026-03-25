@@ -7,7 +7,7 @@ using UnityEditor;
 public class TileSO : ScriptableObject
 {
 	[SerializeField] List<(Tile, Vector2)> m_tiles;
-	[SerializeFIeld] string m_name;
+	[SerializeField] string m_name;
 
 	public List<(Tile, Vector2)> Tiles{
 		get { return m_tiles; }

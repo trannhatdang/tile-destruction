@@ -9,12 +9,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 000c63494ac0579499fb556f81c0bf77, type: 3}
-  m_Name: Constants
+  m_Script: {fileID: 11500000, guid: 9307760de4f81a742992830f1ed0f06a, type: 3}
+  m_Name: gggg
   m_EditorClassIdentifier: 
-  m_blueTileSprite: blue-tile
-  m_greenTileSprite: green-tile
-  m_pinkTileSprite: pink-tile
-  m_redTileSprite: red-tile
-  m_whiteTileSprite: white-tile
-  m_yellowTileSprite: yellow-tile
+  m_name: 

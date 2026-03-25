@@ -5,7 +5,10 @@ using System.Collections.Generic;
 
 public class TileEditor : EditorWindow
 {
+	private VisualElement m_topPane;
 	private VisualElement m_bottomPane;
+
+	private TextField m_nameField;
 
 	private Tile m_selectedTile;
 	private TileColor m_currColor;
@@ -15,11 +18,24 @@ public class TileEditor : EditorWindow
 
 	private Rect m_bottomPaneRect;
 
+	private string m_name = "New Object";
+
 	void createGB()
 	{
+		if(Utils.LoadAsset<ScriptableObject>(m_name))
+		{
+			Debug.LogError("An object already exists with that name!");
+			return;
+		}
+
 		GameObject selectedGB = new GameObject();
 		m_selectedTile = selectedGB.AddComponent<Tile>();
-		m_selectedTile.SetColor(m_currColor);
+
+		ScriptableObject tile = ScriptableObject.CreateInstance(typeof(TileSO));
+		AssetDatabase.CreateAsset(tile, "Assets/ScriptableObjects/Objects/" + m_name + ".asset");
+		m_selectedTile.TileInfo = (TileSO)tile;
+
+		m_selectedTile.Color = m_currColor;
 	}
 
 	void save()
@@ -28,6 +44,26 @@ public class TileEditor : EditorWindow
 	}
 
 	void load()
+	{
+
+	}
+
+	void upButton()
+	{
+
+	}
+
+	void downButton()
+	{
+
+	}	
+
+	void leftButton()
+	{
+
+	}
+
+	void rightButton()
 	{
 
 	}
@@ -45,27 +81,33 @@ public class TileEditor : EditorWindow
 
 		// Each editor window contains a root VisualElement object
 		VisualElement root = rootVisualElement;
-		var splitView = new TwoPaneSplitView(0, 40, TwoPaneSplitViewOrientation.Vertical);
+		var splitView = new TwoPaneSplitView(0, 25, TwoPaneSplitViewOrientation.Vertical);
 		root.Add(splitView);
 
-		VisualElement topPane = new VisualElement();
-		splitView.Add(topPane);
+		m_topPane = new VisualElement();
+		m_topPane.style.flexDirection = FlexDirection.Row;
+		splitView.Add(m_topPane);
 		m_bottomPane = new VisualElement();
 		splitView.Add(m_bottomPane);
+
+		m_nameField = new TextField();
+		m_nameField.style.flexGrow = 1;
+		m_nameField.value = m_name;
+		m_topPane.Add(m_nameField);
 
 		// Create Save button
 		Button saveButton = new Button();
 		saveButton.name = "Save";
 		saveButton.text = "Save";
 		saveButton.RegisterCallback<MouseUpEvent>((evt) => save());
-		topPane.Add(saveButton);
+		m_topPane.Add(saveButton);
 
 		// Create Load button
 		Button loadButton = new Button();
 		loadButton.name = "Load";
 		loadButton.text = "Load";
 		loadButton.RegisterCallback<MouseUpEvent>((evt) => load());
-		topPane.Add(loadButton);
+		m_topPane.Add(loadButton);
 
 		m_createGBButton = new Button();
 		m_createGBButton.name = "Create Game Object";
@@ -82,15 +124,19 @@ public class TileEditor : EditorWindow
 
 		m_dirButtons[0].name = "Up";
 		m_dirButtons[0].text = "↑";
+		m_dirButtons[0].RegisterCallback<MouseUpEvent>((evt) => upButton());
 
 		m_dirButtons[1].name = "Down";
 		m_dirButtons[1].text = "↓";
+		m_dirButtons[1].RegisterCallback<MouseUpEvent>((evt) => downButton());
 
 		m_dirButtons[2].name = "Left";
 		m_dirButtons[2].text = "←";
+		m_dirButtons[2].RegisterCallback<MouseUpEvent>((evt) => leftButton());
 
 		m_dirButtons[3].name = "Right";
 		m_dirButtons[3].text = "→";
+		m_dirButtons[3].RegisterCallback<MouseUpEvent>((evt) => rightButton());
 
 		foreach(Button btn in m_dirButtons)
 		{
@@ -100,6 +146,15 @@ public class TileEditor : EditorWindow
 
 	void Update()
 	{
+		if(m_selectedTile)
+		{
+			m_name = m_selectedTile.TileInfo.Name;
+		}
+		else
+		{
+			m_name = m_nameField.value;
+		}
+
 		m_createGBButton.style.top = m_bottomPaneRect.width / 2;
 
 		if(Selection.count == 1 && Selection.activeGameObject && Selection.activeGameObject.GetComponent<Tile>())
@@ -115,11 +170,13 @@ public class TileEditor : EditorWindow
 		{
 			btn.visible = m_selectedTile;
 		}
-
 		m_createGBButton.visible = !m_selectedTile;
+
 		m_bottomPaneRect = m_bottomPane.layout;
 
 		//Preprogramed values -- maybe bad
+		m_createGBButton.style.top = m_bottomPaneRect.height / 2;
+		
 		m_dirButtons[0].style.top = m_bottomPaneRect.height / 2 - 90;
 		m_dirButtons[0].style.left = m_bottomPaneRect.width / 2 - 30;
 

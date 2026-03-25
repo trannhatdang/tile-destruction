@@ -21,6 +21,16 @@ public class Tile : MonoBehaviour
 		get { return transform.parent == null; }
 	}
 
+	public TileSO TileInfo {
+		get { return m_tileSO; }
+		set { m_tileSO = value; }
+	}
+
+	public TileColor Color {
+		get { return m_col; }
+		set { m_col = value; }
+	}
+
 	void Start()
 	{
 		m_spr = gameObject.AddComponent<SpriteRenderer>();
@@ -44,18 +54,6 @@ public class Tile : MonoBehaviour
 	public void Hit(float damage)
 	{
 		m_hp -= damage;
-	}
-
-	public TileColor GetColor()
-	{
-		return m_col;
-	}
-
-	public void SetColor(TileColor col)
-	{
-		m_col = col;
-
-		m_spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
 	}
 
 	void OnMouseUpAsButton()

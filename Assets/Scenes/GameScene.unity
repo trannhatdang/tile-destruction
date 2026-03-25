@@ -521,9 +521,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5bc2fb70b31661459e6803e206c7ae5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_left: {fileID: 0}
+  m_right: {fileID: 0}
+  m_top: {fileID: 0}
+  m_bottom: {fileID: 0}
+  m_col: 0
   m_joint: {fileID: 0}
+  m_spr: {fileID: 0}
+  m_tileSO: {fileID: 0}
   m_hp: 100
-  m_isParent: 0
 --- !u!255 &1094726247
 FixedJoint2D:
   m_ObjectHideFlags: 0
@@ -886,9 +892,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5bc2fb70b31661459e6803e206c7ae5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_left: {fileID: 0}
+  m_right: {fileID: 0}
+  m_top: {fileID: 0}
+  m_bottom: {fileID: 0}
+  m_col: 0
   m_joint: {fileID: 0}
+  m_spr: {fileID: 0}
+  m_tileSO: {fileID: 0}
   m_hp: 100
-  m_isParent: 0
 --- !u!255 &1481762438
 FixedJoint2D:
   m_ObjectHideFlags: 0
@@ -993,9 +1005,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5bc2fb70b31661459e6803e206c7ae5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_left: {fileID: 0}
+  m_right: {fileID: 0}
+  m_top: {fileID: 0}
+  m_bottom: {fileID: 0}
+  m_col: 0
   m_joint: {fileID: 0}
+  m_spr: {fileID: 0}
+  m_tileSO: {fileID: 0}
   m_hp: 100
-  m_isParent: 1
 --- !u!4 &1589407673
 Transform:
   m_ObjectHideFlags: 0
@@ -1278,9 +1296,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5bc2fb70b31661459e6803e206c7ae5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_left: {fileID: 0}
+  m_right: {fileID: 0}
+  m_top: {fileID: 0}
+  m_bottom: {fileID: 0}
+  m_col: 0
   m_joint: {fileID: 0}
+  m_spr: {fileID: 0}
+  m_tileSO: {fileID: 0}
   m_hp: 100
-  m_isParent: 0
 --- !u!255 &1736967029
 FixedJoint2D:
   m_ObjectHideFlags: 0
@@ -1472,9 +1496,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b5bc2fb70b31661459e6803e206c7ae5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  m_left: {fileID: 0}
+  m_right: {fileID: 0}
+  m_top: {fileID: 0}
+  m_bottom: {fileID: 0}
+  m_col: 0
   m_joint: {fileID: 0}
+  m_spr: {fileID: 0}
+  m_tileSO: {fileID: 0}
   m_hp: 100
-  m_isParent: 0
 --- !u!255 &1975672282
 FixedJoint2D:
   m_ObjectHideFlags: 0
