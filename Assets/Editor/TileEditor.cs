@@ -10,8 +10,8 @@ public class TileEditor : EditorWindow
 	private Tile m_selectedTile;
 	private TileColor m_currColor;
 
-	private Button createGBButton;
-	private List<Button> dirButtons;
+	private Button m_createGBButton;
+	private List<Button> m_dirButtons;
 
 	private Rect m_bottomPaneRect;
 
@@ -41,7 +41,7 @@ public class TileEditor : EditorWindow
 
 	public void CreateGUI()
 	{
-		dirButtons = new List<Button>(4);
+		m_dirButtons = new List<Button>(4);
 
 		// Each editor window contains a root VisualElement object
 		VisualElement root = rootVisualElement;
@@ -67,41 +67,33 @@ public class TileEditor : EditorWindow
 		loadButton.RegisterCallback<MouseUpEvent>((evt) => load());
 		topPane.Add(loadButton);
 
-		Button createGBButton = new Button();
-		createGBButton.name = "Create Game Object";
-		createGBButton.text = "Create Object";
-		createGBButton.RegisterCallback<MouseUpEvent>((evt) => createGB());
+		m_createGBButton = new Button();
+		m_createGBButton.name = "Create Game Object";
+		m_createGBButton.text = "Create Object";
+		m_createGBButton.RegisterCallback<MouseUpEvent>((evt) => createGB());
 
-		createGBButton.style.top = 50;
-		m_bottomPane.Add(createGBButton);
+		m_bottomPane.Add(m_createGBButton);
 
 		for(int i = 0; i < 4; ++i)
 		{
-			dirButtons.Add(new Button());
-			dirButtons[i].style.width = 20;
+			m_dirButtons.Add(new Button());
+			m_dirButtons[i].style.width = 50;
 		}
 
-		dirButtons[0].name = "Up";
-		dirButtons[0].text = "↑";
-		dirButtons[0].style.top = 50;
-		dirButtons[0].style.left = 55;
 
-		dirButtons[1].name = "Down";
-		dirButtons[1].text = "↓";
-		dirButtons[1].style.top = 60;
-		dirButtons[1].style.left = 55;
+		m_dirButtons[0].name = "Up";
+		m_dirButtons[0].text = "↑";
 
-		dirButtons[2].name = "Left";
-		dirButtons[2].text = "←";
-		dirButtons[2].style.top = 55;
-		dirButtons[2].style.left = 50;
+		m_dirButtons[1].name = "Down";
+		m_dirButtons[1].text = "↓";
 
-		dirButtons[3].name = "Right";
-		dirButtons[3].text = "→";
-		dirButtons[3].style.top = 55;
-		dirButtons[3].style.left = 60;
+		m_dirButtons[2].name = "Left";
+		m_dirButtons[2].text = "←";
 
-		foreach(Button btn in dirButtons)
+		m_dirButtons[3].name = "Right";
+		m_dirButtons[3].text = "→";
+
+		foreach(Button btn in m_dirButtons)
 		{
 			m_bottomPane.Add(btn);
 		}
@@ -109,17 +101,36 @@ public class TileEditor : EditorWindow
 
 	void Update()
 	{
-		if(Selection.count == 1 && Selection.activeGameObject.GetComponent<Tile>())
+		m_createGBButton.style.top = m_bottomPaneRect.width / 2;
+
+		if(Selection.count == 1 && Selection.activeGameObject && Selection.activeGameObject.GetComponent<Tile>())
 		{
 			m_selectedTile = Selection.activeGameObject.GetComponent<Tile>();
 		}
+		else
+		{
+			m_selectedTile = null;
+		}
 
-		foreach(Button btn in dirButtons)
+		foreach(Button btn in m_dirButtons)
 		{
 			btn.visible = m_selectedTile;
 		}
 
-		createGBButton.visible = !m_selectedTile;
+		m_createGBButton.visible = !m_selectedTile;
 		m_bottomPaneRect = m_bottomPane.layout;
+
+		//Preprogramed values -- maybe bad
+		m_dirButtons[0].style.top = m_bottomPaneRect.height / 2 - 90;
+		m_dirButtons[0].style.left = m_bottomPaneRect.width / 2 - 30;
+
+		m_dirButtons[1].style.top = m_bottomPaneRect.height / 2 - 30;
+		m_dirButtons[1].style.left = m_bottomPaneRect.width / 2 - 30;
+
+		m_dirButtons[2].style.top = m_bottomPaneRect.height / 2 - 90;
+		m_dirButtons[2].style.left = m_bottomPaneRect.width / 2 - 90;
+
+		m_dirButtons[3].style.top = m_bottomPaneRect.height / 2 - 110;
+		m_dirButtons[3].style.left = m_bottomPaneRect.width / 2 + 30;
 	}
 }
