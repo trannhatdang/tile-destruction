@@ -9,9 +9,10 @@ public class Tile : MonoBehaviour
 	[SerializeField] Tile m_right;
 	[SerializeField] Tile m_top;
 	[SerializeField] Tile m_bottom;
+	[SerializeField] TileColor m_col;
 	[SerializeField] FixedJoint2D m_joint;
 	[SerializeField] SpriteRenderer m_spr;
-	[SerializeField] TileColor m_col;
+	[SerializeField] TileSO m_tileSO;
 	
 	[SerializeField] float m_hp = 100;
 

@@ -80,7 +80,6 @@ public class TileEditor : EditorWindow
 			m_dirButtons[i].style.width = 50;
 		}
 
-
 		m_dirButtons[0].name = "Up";
 		m_dirButtons[0].text = "↑";
 
