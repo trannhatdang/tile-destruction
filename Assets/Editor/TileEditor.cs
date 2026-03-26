@@ -17,6 +17,7 @@ public class TileEditor : EditorWindow
 	private TileColor m_currColor;
 
 	private Button m_createGBButton;
+	private Button m_deleteButton;
 	private List<Button> m_dirButtons;
 
 	private Rect m_bottomPaneRect;
@@ -52,6 +53,13 @@ public class TileEditor : EditorWindow
 		Selection.activeGameObject = m_selectedTile.gameObject;
 	}
 
+	void delete()
+	{
+		var oldTile = m_selectedTile;
+		//m_selectedTile = m_selectedTile.GetNearestTile();
+		oldTile.Remove();
+	}
+
 	void save()
 	{
 
@@ -59,7 +67,13 @@ public class TileEditor : EditorWindow
 
 	void load()
 	{
+		Debug.Log("hi");
+	}
 
+	void changeColor()
+	{
+		m_currColor = (TileColor)m_colorField.value;
+		m_selectedTile.ChangeColor(m_currColor);
 	}
 
 	void upButton()
@@ -99,7 +113,7 @@ public class TileEditor : EditorWindow
 
 		// Each editor window contains a root VisualElement object
 		VisualElement root = rootVisualElement;
-		var splitView = new TwoPaneSplitView(0, 25, TwoPaneSplitViewOrientation.Vertical);
+		var splitView = new TwoPaneSplitView(0, 40, TwoPaneSplitViewOrientation.Vertical);
 		root.Add(splitView);
 
 		m_topPane = new VisualElement();
@@ -134,7 +148,8 @@ public class TileEditor : EditorWindow
 		loadButton.RegisterCallback<MouseUpEvent>((evt) => load());
 		m_toptopPane.Add(loadButton);
 
-		m_colorField = new EnumField();
+		m_colorField = new EnumField("Color: ", TileColor.BLUE);
+		m_colorField.RegisterValueChangedCallback((evt) => changeColor());
 		m_topbotPane.Add(m_colorField);
 
 		m_createGBButton = new Button();
@@ -170,6 +185,11 @@ public class TileEditor : EditorWindow
 		{
 			m_bottomPane.Add(btn);
 		}
+
+		m_deleteButton = new Button();
+		m_deleteButton.name = "Delete";
+		m_deleteButton.text = "Delete";
+		m_deleteButton.RegisterCallback<MouseUpEvent>((evt) => delete());
 	}
 
 	void Update()
@@ -177,10 +197,14 @@ public class TileEditor : EditorWindow
 		if(m_selectedTile)
 		{
 			m_name = m_selectedTile.TileObject.Name;
+			m_currColor = m_selectedTile.Color;
+			m_colorField.value = m_selectedTile.Color;
 		}
 		else
 		{
 			m_name = m_nameField.value;
+			m_currColor = TileColor.BLUE;
+			m_colorField.value = TileColor.BLUE;
 		}
 
 		m_createGBButton.style.top = m_bottomPaneRect.width / 2;

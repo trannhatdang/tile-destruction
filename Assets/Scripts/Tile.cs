@@ -55,14 +55,22 @@ public class Tile : MonoBehaviour
 			if(!m_left)
 			{
 				GameObject left = new GameObject();
+				left.name = gameObject.name;
 				left.transform.parent = m_isParent ? transform : transform.parent;
 
-				left.AddComponent<SpriteRenderer>();
+				var spr = left.AddComponent<SpriteRenderer>();
+				spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
 				left.AddComponent<Rigidbody2D>();
 				left.AddComponent<BoxCollider2D>();
 				left.AddComponent<RelativeJoint2D>();
 
 				m_left = left.AddComponent<Tile>();
+				m_left.TileObject = m_tileSO;
+				m_left.m_pos = m_pos + new Vector2(-1, 0);
+				m_left.transform.position = Vector2.Scale(new Vector2(0.125f, 0.125f), m_left.m_pos);
+				m_left.m_col = m_col;
+
+				m_left.m_right = this;
 			}
 
 			return m_left;
@@ -74,14 +82,22 @@ public class Tile : MonoBehaviour
 			if(!m_right)
 			{
 				GameObject right = new GameObject();
+				right.name = gameObject.name;
 				right.transform.parent = m_isParent ? transform : transform.parent;
 
-				right.AddComponent<SpriteRenderer>();
+				var spr = right.AddComponent<SpriteRenderer>();
+				spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
 				right.AddComponent<Rigidbody2D>();
 				right.AddComponent<BoxCollider2D>();
 				right.AddComponent<RelativeJoint2D>();
 
 				m_right = right.AddComponent<Tile>();
+				m_right.TileObject = m_tileSO;
+				m_right.m_pos = m_pos + new Vector2(1, 0);
+				m_right.transform.position = Vector2.Scale(new Vector2(0.125f, 0.125f), m_right.m_pos);
+				m_right.m_col = m_col;
+
+				m_right.m_left = this;
 			}
 
 			return m_right;
@@ -93,14 +109,22 @@ public class Tile : MonoBehaviour
 			if(!m_top)
 			{
 				GameObject top = new GameObject();
+				top.name = gameObject.name;
 				top.transform.parent = m_isParent ? transform : transform.parent;
 
-				top.AddComponent<SpriteRenderer>();
+				var spr = top.AddComponent<SpriteRenderer>();
+				spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
 				top.AddComponent<Rigidbody2D>();
 				top.AddComponent<BoxCollider2D>();
 				top.AddComponent<RelativeJoint2D>();
 
 				m_top = top.AddComponent<Tile>();
+				m_top.TileObject = m_tileSO;
+				m_top.m_pos = m_pos + new Vector2(0, 1);
+				m_top.transform.position = Vector2.Scale(new Vector2(0.125f, 0.125f), m_top.m_pos);
+				m_top.m_col = m_col;
+
+				m_top.m_down = this;
 			}
 
 			return m_top;
@@ -112,14 +136,22 @@ public class Tile : MonoBehaviour
 			if(!m_down)
 			{
 				GameObject down = new GameObject();
+				down.name = gameObject.name;
 				down.transform.parent = m_isParent ? transform : transform.parent;
 
-				down.AddComponent<SpriteRenderer>();
+				var spr = down.AddComponent<SpriteRenderer>();
+				spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
 				down.AddComponent<Rigidbody2D>();
 				down.AddComponent<BoxCollider2D>();
 				down.AddComponent<RelativeJoint2D>();
 
 				m_down = down.AddComponent<Tile>();
+				m_down.TileObject = m_tileSO;
+				m_down.m_pos = m_pos + new Vector2(0, -1);
+				m_down.transform.position = Vector2.Scale(new Vector2(0.125f, 0.125f), m_down.m_pos);
+				m_down.m_col = m_col;
+
+				m_down.m_top = this;
 			}
 
 			return m_down;
@@ -171,5 +203,21 @@ public class Tile : MonoBehaviour
 			m_pos
 		);
 
+	}
+
+	public void Remove()
+	{
+
+	}
+
+	public void ChangeColor(TileColor col)
+	{
+		m_col = col;
+
+		if(!m_spr)
+		{
+			m_spr = GetComponent<SpriteRenderer>();
+		}
+		m_spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(col));
 	}
 }
