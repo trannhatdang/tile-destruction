@@ -45,11 +45,13 @@ public class TileEditor : EditorWindow
 
 		m_selectedTile = selectedGB.AddComponent<Tile>();
 		selectedGB.AddComponent<SpriteRenderer>().sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_currColor));
+
 		var rb = selectedGB.AddComponent<Rigidbody2D>();
 		rb.mass = 1000;
 		rb.angularDrag = 0;
 		selectedGB.AddComponent<BoxCollider2D>();
-		selectedGB.AddComponent<FixedJoint2D>();
+
+		m_selectedTile.InitializeJoints();
 
 		ScriptableObject tile = ScriptableObject.CreateInstance(typeof(TileObjectSO));
 		AssetDatabase.CreateAsset(tile, "Assets/ScriptableObjects/Objects/" + m_name + ".asset");
@@ -66,7 +68,7 @@ public class TileEditor : EditorWindow
 	void delete()
 	{
 		var oldTile = m_selectedTile;
-		//m_selectedTile = m_selectedTile.GetNearestTile();
+		//m_selectedTile = m_selectedTile.GetNearestTile(;
 		oldTile.Remove();
 	}
 
@@ -134,8 +136,6 @@ public class TileEditor : EditorWindow
 		{
 			m_selectedTile = null;
 			m_name = m_nameField.value;
-			m_currColor = TileColor.BLUE;
-			m_colorField.value = TileColor.BLUE;
 		}
 
 		foreach(Button btn in m_dirButtons)

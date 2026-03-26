@@ -7,13 +7,17 @@ using UnityEditor;
 [CreateAssetMenu(fileName = "LevelSO", menuName = "ScriptableObjects/LevelSO")]
 public class LevelSO : ScriptableObject
 {
-	[SerializeField] List<(TileObjectSO, float)> m_objects = new List<(TileObjectSO, float)>();
+	[SerializeField] List<TileObjectSO> m_objects = new List<TileObjectSO>();
+	[SerializeField] List<float> m_timings = new List<float>();
 	[SerializeField] int m_levelUpXP;
 	[SerializeField] int m_passLevelXP;
 	
 	public Action objectsChanged;
-	public List<(TileObjectSO, float)> Objects {
+	public List<TileObjectSO> Objects {
 		get { return m_objects; }
+	}
+	public List<float> Timings {
+		get { return m_timings; }
 	}
 	public int LevelUpXP {
 		get { return m_levelUpXP; }
@@ -24,15 +28,16 @@ public class LevelSO : ScriptableObject
 
 	public void SetObject(TileObjectSO obj, float timing, int index)
 	{
-		if(index < 0 || index >= m_objects.Count) return;
-
-		m_objects[index] = (obj, timing);
-		objectsChanged();
+		// if(index < 0 || index >= m_objects.Count) return;
+		//
+		// m_objects[index] = obj;
+		//
+		// objectsChanged();
 	}
 
 	public void AddNewObject()
 	{
-		m_objects.Add((null, 0.0f));
-		objectsChanged();
+		// m_objects.Add((null, 0.0f));
+		// objectsChanged();
 	}
 }

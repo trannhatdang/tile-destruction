@@ -129,7 +129,8 @@ public class TileObjectSO : ScriptableObject
 			m_parentTileRB.mass = 1000;
 			m_parentTileRB.angularDrag = 0;
 			selectedGB.AddComponent<BoxCollider2D>();
-			selectedGB.AddComponent<FixedJoint2D>().enabled = false;
+
+			m_parentTile.InitializeJoints();
 
 			m_parentTile.TileObject = this;
 			m_parentTile.Color = tile.Color;
@@ -157,15 +158,14 @@ public class TileObjectSO : ScriptableObject
 			newGB.AddComponent<SpriteRenderer>().sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(tile.Color));
 			newGB.AddComponent<Rigidbody2D>().angularDrag = 0;
 			newGB.AddComponent<BoxCollider2D>();
-			var joint = newGB.AddComponent<FixedJoint2D>();
-			joint.connectedBody = m_parentTileRB;
+			m_lastTileRB = newGB.GetComponent<Rigidbody2D>();
 
 			Tile newTile = newGB.AddComponent<Tile>();
 			newTile.TileObject = this;
 			newTile.Color = tile.Color;
 			newTile.Position = tile.Position;
 
-			m_lastTileRB = newGB.GetComponent<Rigidbody2D>();
+			newTile.InitializeJoints();
 
 			m_lastTile = newTile;
 			addedTiles.Add(m_lastTile);
@@ -180,22 +180,38 @@ public class TileObjectSO : ScriptableObject
 				if(tile.Position.x == other_tile.Position.x && tile.Position.y == other_tile.Position.y + 1)
 				{
 					tile.DownTile = other_tile;
+					tile.DownJoint.connectedBody = other_tile.GetComponent<Rigidbody2D>();
+					tile.DownJoint.enabled = true;
 					other_tile.TopTile = tile;
+					other_tile.TopJoint.connectedBody = tile.GetComponent<Rigidbody2D>();
+					other_tile.TopJoint.enabled = true;
 				}
 				else if(tile.Position.x == other_tile.Position.x && tile.Position.y == other_tile.Position.y - 1)
 				{
 					tile.TopTile = other_tile;
+					tile.TopJoint.connectedBody = other_tile.GetComponent<Rigidbody2D>();
+					tile.TopJoint.enabled = true;
 					other_tile.DownTile = tile;
+					other_tile.DownJoint.connectedBody = tile.GetComponent<Rigidbody2D>();
+					other_tile.DownJoint.enabled = true;
 				}
 				else if(tile.Position.y == other_tile.Position.y && tile.Position.x == other_tile.Position.x + 1)
 				{
 					tile.LeftTile = other_tile;
+					tile.LeftJoint.connectedBody = other_tile.GetComponent<Rigidbody2D>();
+					tile.LeftJoint.enabled = true;
 					other_tile.RightTile = tile;
+					other_tile.RightJoint.connectedBody = tile.GetComponent<Rigidbody2D>();
+					other_tile.RightJoint.enabled = true;
 				}
 				else if(tile.Position.y == other_tile.Position.y && tile.Position.x == other_tile.Position.x - 1)
 				{
 					tile.RightTile = other_tile;
+					tile.RightJoint.connectedBody = other_tile.GetComponent<Rigidbody2D>();
+					tile.RightJoint.enabled = true;
 					other_tile.LeftTile = tile;
+					other_tile.LeftJoint.connectedBody = tile.GetComponent<Rigidbody2D>();
+					other_tile.LeftJoint.enabled = true;
 				}
 			}
 

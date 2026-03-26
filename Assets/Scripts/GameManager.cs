@@ -12,27 +12,41 @@ public class GameManager : MonoBehaviour
 	[SerializeField] int m_objIndex;
 	[SerializeField] int m_xp;
 
-	private List<(TileObjectSO obj, float timing)> objects = new List<(TileObjectSO, float)>();
+	private List<TileObjectSO> m_objects;
+	private List<float> m_timings;
+
+	private List<GameObject> m_spawnedObjects;
 
 	void Start()
 	{
-		objects = m_levelInfo.Objects;
+		m_objects = m_levelInfo.Objects;
+		m_timings = m_levelInfo.Timings;
+
+		m_abyss.onTileEnter += onTileEnter;
+
+		for(int i = 0; i < m_objects.Count; ++i)
+		{
+			var gb = Instantiate(m_objects[i].Prefab, m_spawnPosition.position, Quaternion.identity, transform);
+			gb.SetActive(true);
+		}
 	}
 	
 	void Update()
 	{
+		if(m_objIndex >= m_objects.Count) return;
+
 		m_timeSinceLastDrop += Time.deltaTime;
 		
-		if(m_timeSinceLastDrop > objects[m_objIndex].timing && m_topLimit.IsHittingLimit)
+		if(m_timeSinceLastDrop > m_timings[m_objIndex] && !m_topLimit.IsHittingLimit)
 		{
-			Deng.ObjectPoolManager.SpawnObject(objects[m_objIndex++].obj.Prefab, m_spawnPosition.position, Quaternion.identity);
+			m_spawnedObjects[m_objIndex++].SetActive(true);
 			m_timeSinceLastDrop = 0.0f;
-
 		}
 	}
 
-	void dropTile()
+	void onTileEnter(Tile tile)
 	{
-
+		m_xp += Constants.Instance.XP;
+		Destroy(tile.gameObject);
 	}
 }

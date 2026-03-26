@@ -9,20 +9,39 @@ public class Tile : MonoBehaviour
 	[SerializeField] Tile m_right;
 	[SerializeField] Tile m_top;
 	[SerializeField] Tile m_down;
+	[SerializeField] FixedJoint2D m_leftJoint;
+	[SerializeField] FixedJoint2D m_rightJoint;
+	[SerializeField] FixedJoint2D m_topJoint;
+	[SerializeField] FixedJoint2D m_downJoint;
 	[SerializeField] Vector2 m_pos;
 	[SerializeField] bool m_isParent;
 
 	[SerializeField] TileColor m_col;
-	[SerializeField] FixedJoint2D m_joint;
 	[SerializeField] SpriteRenderer m_spr;
 	[SerializeField] TileObjectSO m_tileSO;
 	[SerializeField] Rigidbody2D m_rb;
-	private TileInfo m_tileInfo;
 	
 	[SerializeField] float m_hp = 100;
 
 	private List<Tile> m_visitedTiles = new List<Tile>();
 
+	public FixedJoint2D LeftJoint {
+		get { return m_leftJoint; }
+	}
+
+	public FixedJoint2D RightJoint {
+		get { return m_rightJoint; }
+	}
+
+	public FixedJoint2D TopJoint {
+		get { return m_topJoint; }
+	}
+
+	public FixedJoint2D DownJoint {
+		get { return m_downJoint; }
+	}
+
+	private TileInfo m_tileInfo;
 	private TileInfo tileInfo {
 		get {
 			if(m_tileInfo == null)
@@ -81,17 +100,18 @@ public class Tile : MonoBehaviour
 				left.AddComponent<Rigidbody2D>();
 				left.AddComponent<BoxCollider2D>();
 
-				var joint = left.AddComponent<FixedJoint2D>();
-				joint.connectedBody = IsParent ? GetComponent<Rigidbody2D>() : transform.parent.GetComponent<Rigidbody2D>();
-
 				m_left = left.AddComponent<Tile>();
 				m_left.TileObject = m_tileSO;
 				m_left.m_pos = m_pos + new Vector2(-1, 0);
 				m_left.transform.localPosition = Vector2.Scale(new Vector2(0.125f, 0.125f), m_left.m_pos);
 				m_left.m_col = m_col;
 
-				floodTilesWithNewTile(m_left);
+				m_left.InitializeJoints();
+
+				receiveNewTile(m_left);
 				m_left.m_right = this;
+				m_left.m_rightJoint.connectedBody = GetComponent<Rigidbody2D>();
+				m_left.m_rightJoint.enabled = true;
 			}
 
 			return m_left;
@@ -112,8 +132,6 @@ public class Tile : MonoBehaviour
 				spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
 				right.AddComponent<Rigidbody2D>();
 				right.AddComponent<BoxCollider2D>();
-				var joint = right.AddComponent<FixedJoint2D>();
-				joint.connectedBody = IsParent ? GetComponent<Rigidbody2D>() : transform.parent.GetComponent<Rigidbody2D>();
 
 				m_right = right.AddComponent<Tile>();
 				m_right.TileObject = m_tileSO;
@@ -121,8 +139,12 @@ public class Tile : MonoBehaviour
 				m_right.transform.localPosition = Vector2.Scale(new Vector2(0.125f, 0.125f), m_right.m_pos);
 				m_right.m_col = m_col;
 
-				floodTilesWithNewTile(m_right);
+				m_right.InitializeJoints();
+
+				receiveNewTile(m_right);
 				m_right.m_left = this;
+				m_right.m_leftJoint.connectedBody = GetComponent<Rigidbody2D>();
+				m_right.m_leftJoint.enabled = true;
 			}
 
 			return m_right;
@@ -143,8 +165,6 @@ public class Tile : MonoBehaviour
 				spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
 				top.AddComponent<Rigidbody2D>();
 				top.AddComponent<BoxCollider2D>();
-				var joint = top.AddComponent<FixedJoint2D>();
-				joint.connectedBody = IsParent ? GetComponent<Rigidbody2D>() : transform.parent.GetComponent<Rigidbody2D>();
 
 				m_top = top.AddComponent<Tile>();
 				m_top.TileObject = m_tileSO;
@@ -152,8 +172,12 @@ public class Tile : MonoBehaviour
 				m_top.transform.localPosition = Vector2.Scale(new Vector2(0.125f, 0.125f), m_top.m_pos);
 				m_top.m_col = m_col;
 
-				floodTilesWithNewTile(m_top);
+				m_top.InitializeJoints();
+
+				receiveNewTile(m_top);
 				m_top.m_down = this;
+				m_top.m_downJoint.connectedBody = GetComponent<Rigidbody2D>();
+				m_top.m_downJoint.enabled = true;
 			}
 
 			return m_top;
@@ -175,17 +199,18 @@ public class Tile : MonoBehaviour
 				down.AddComponent<Rigidbody2D>();
 				down.AddComponent<BoxCollider2D>();
 
-				var joint = down.AddComponent<FixedJoint2D>();
-				joint.connectedBody = IsParent ? GetComponent<Rigidbody2D>() : transform.parent.GetComponent<Rigidbody2D>();
-
 				m_down = down.AddComponent<Tile>();
 				m_down.TileObject = m_tileSO;
 				m_down.m_pos = m_pos + new Vector2(0, -1);
 				m_down.transform.localPosition = Vector2.Scale(new Vector2(0.125f, 0.125f), m_down.m_pos);
 				m_down.m_col = m_col;
 
+				m_down.InitializeJoints();
+
 				floodTilesWithNewTile(m_down);
 				m_down.m_top = this;
+				m_down.m_topJoint.connectedBody = GetComponent<Rigidbody2D>();
+				m_down.m_topJoint.enabled = true;
 			}
 
 			return m_down;
@@ -228,22 +253,38 @@ public class Tile : MonoBehaviour
 		if(tile.m_pos.x == m_pos.x + 1 && tile.m_pos.y == m_pos.y)
 		{
 			m_right = tile;
+			m_rightJoint.connectedBody = tile.GetComponent<Rigidbody2D>();
+			m_rightJoint.enabled = true;
 			tile.m_left = this;
+			tile.m_leftJoint.connectedBody = GetComponent<Rigidbody2D>();
+			tile.m_leftJoint.enabled = true;
 		}
 		else if(tile.m_pos.x == m_pos.x - 1 && tile.m_pos.y == m_pos.y)
 		{
 			m_left = tile;
+			m_leftJoint.connectedBody = tile.GetComponent<Rigidbody2D>();
+			m_leftJoint.enabled = true;
 			tile.m_right = this;
+			tile.m_rightJoint.connectedBody = GetComponent<Rigidbody2D>();
+			tile.m_rightJoint.enabled = true;
 		}
 		else if(tile.m_pos.y == m_pos.y + 1 && tile.m_pos.x == m_pos.x)
 		{
 			m_top = tile;
+			m_topJoint.connectedBody = tile.GetComponent<Rigidbody2D>();
+			m_topJoint.enabled = true;
 			tile.m_down = this;
+			tile.m_downJoint.connectedBody = GetComponent<Rigidbody2D>();
+			tile.m_downJoint.enabled = true;
 		}
 		else if(tile.m_pos.y == m_pos.y - 1 && tile.m_pos.x == m_pos.x)
 		{
 			m_down = tile;
+			m_downJoint.connectedBody = tile.GetComponent<Rigidbody2D>();
+			m_downJoint.enabled = true;
 			tile.m_top = this;
+			tile.m_topJoint.connectedBody = GetComponent<Rigidbody2D>();
+			tile.m_topJoint.enabled = true;
 		}
 
 		floodTilesWithNewTile(tile);
@@ -257,9 +298,6 @@ public class Tile : MonoBehaviour
 		{
 			m_spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
 		}
-
-		m_joint = GetComponent<FixedJoint2D>();
-		m_joint.enabled = !IsParent;
 		m_rb = GetComponent<Rigidbody2D>();
 	}
 
@@ -268,16 +306,60 @@ public class Tile : MonoBehaviour
 	{
 		if(m_hp <= 0 && !IsParent)
 		{
-			m_joint.enabled = false;
+			SetJoints(false);
 		}
-		// m_rb.MovePosition(transform.position + new Vector3(0, -0.001f, 0));
-
-		
 	}
 
 	void OnMouseUpAsButton()
 	{
 		Hit(25); //GameManager.PlayerDamage?
+	}
+
+	public void InitializeJoints()
+	{
+		if(!m_leftJoint)
+		{
+			m_leftJoint = gameObject.AddComponent<FixedJoint2D>();
+		}
+
+		if(!m_rightJoint)
+		{
+			m_rightJoint = gameObject.AddComponent<FixedJoint2D>();
+		}
+
+		if(!m_topJoint)
+		{
+			m_topJoint = gameObject.AddComponent<FixedJoint2D>();
+		}
+
+		if(!m_downJoint)
+		{
+			m_downJoint = gameObject.AddComponent<FixedJoint2D>();
+		}
+		SetJoints(false);
+	}
+
+	public void SetJoints(bool val)
+	{
+		if(m_leftJoint)
+		{
+			m_leftJoint.enabled = val;
+		}
+
+		if(m_rightJoint)
+		{
+			m_rightJoint.enabled = val;
+		}
+
+		if(m_topJoint)
+		{
+			m_topJoint.enabled = val;
+		}
+
+		if(m_downJoint)
+		{
+			m_downJoint.enabled = val;
+		}
 	}
 
 	public void Hit(float damage)
