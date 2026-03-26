@@ -246,12 +246,7 @@ public class TileEditor : EditorWindow
 
 		Selection.selectionChanged += selectionChanged;
 
-		foreach(Button btn in m_dirButtons)
-		{
-			btn.visible = m_selectedTile;
-		}
-		m_createGBButton.visible = !m_selectedTile;
-		m_loadObjectField.visible = !m_selectedTile;
+		selectionChanged();
 	}
 
 	void Update()

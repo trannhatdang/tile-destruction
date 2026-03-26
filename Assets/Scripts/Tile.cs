@@ -54,6 +54,7 @@ public class Tile : MonoBehaviour
 			{
 				m_spr = GetComponent<SpriteRenderer>();
 			}
+
 			m_spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
 		}
 	}
@@ -86,11 +87,12 @@ public class Tile : MonoBehaviour
 				m_left.transform.localPosition = Vector2.Scale(new Vector2(0.125f, 0.125f), m_left.m_pos);
 				m_left.m_col = m_col;
 
-				FloodTilesWithNewTile(m_left);
+				floodTilesWithNewTile(m_left);
 			}
 
 			return m_left;
 		}
+		set { m_left = value; }
 	}
 
 	public Tile RightTile {
@@ -115,11 +117,12 @@ public class Tile : MonoBehaviour
 				m_right.transform.localPosition = Vector2.Scale(new Vector2(0.125f, 0.125f), m_right.m_pos);
 				m_right.m_col = m_col;
 
-				FloodTilesWithNewTile(m_right);
+				floodTilesWithNewTile(m_right);
 			}
 
 			return m_right;
 		}
+		set { m_right = value; }
 	}
 
 	public Tile TopTile {
@@ -144,11 +147,12 @@ public class Tile : MonoBehaviour
 				m_top.transform.localPosition = Vector2.Scale(new Vector2(0.125f, 0.125f), m_top.m_pos);
 				m_top.m_col = m_col;
 
-				FloodTilesWithNewTile(m_top);
+				floodTilesWithNewTile(m_top);
 			}
 
 			return m_top;
 		}
+		set { m_top = value; }
 	}
 
 	public Tile DownTile {
@@ -174,14 +178,15 @@ public class Tile : MonoBehaviour
 				m_down.transform.localPosition = Vector2.Scale(new Vector2(0.125f, 0.125f), m_down.m_pos);
 				m_down.m_col = m_col;
 
-				FloodTilesWithNewTile(m_down);
+				floodTilesWithNewTile(m_down);
 			}
 
 			return m_down;
 		}
+		set { m_down = value; }
 	}
 
-	public void FloodTilesWithNewTile(Tile tile)
+	void floodTilesWithNewTile(Tile tile)
 	{
 		if(m_left)
 		{
@@ -234,12 +239,13 @@ public class Tile : MonoBehaviour
 			tile.m_top = this;
 		}
 
-		FloodTilesWithNewTile(tile);
+		floodTilesWithNewTile(tile);
 	}
 
 	void Start()
 	{
 		m_spr = gameObject.GetComponent<SpriteRenderer>();
+
 		if(m_spr)
 		{
 			m_spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));

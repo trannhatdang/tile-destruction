@@ -23,6 +23,7 @@ public class TileObjectSO : ScriptableObject
 
 	private Tile m_parentTile;
 	private Tile m_lastTile;
+	private Rigidbody2D m_parentTileRB;
 	private Rigidbody2D m_lastTileRB;
 
 	public List<TileInfo> Tiles{
@@ -79,6 +80,7 @@ public class TileObjectSO : ScriptableObject
 
 	public void Load()
 	{
+		List<Tile> addedTiles = new List<Tile>();
 		foreach(var tile in m_tiles)
 		{
 			if(tile.Position != Vector2.zero)
@@ -92,7 +94,7 @@ public class TileObjectSO : ScriptableObject
 
 			m_parentTile = selectedGB.AddComponent<Tile>();
 			selectedGB.AddComponent<SpriteRenderer>().sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(tile.Color));
-			selectedGB.AddComponent<Rigidbody2D>();
+			m_parentTileRB = selectedGB.AddComponent<Rigidbody2D>();
 			selectedGB.AddComponent<BoxCollider2D>();
 			selectedGB.AddComponent<FixedJoint2D>().enabled = false;
 
@@ -102,12 +104,14 @@ public class TileObjectSO : ScriptableObject
 
 			Selection.activeGameObject = selectedGB;
 
+			addedTiles.Add(m_parentTile);
+
 			break;
 		}
 
 		foreach(var tile in m_tiles)
 		{
-			if(tile.Position == Vector2.zero) 
+			if(tile.Position == Vector2.zero)
 			{
 				continue;
 			}
@@ -118,27 +122,51 @@ public class TileObjectSO : ScriptableObject
 			newGB.transform.localPosition = Vector2.Scale(new Vector2(0.125f, 0.125f), tile.Position);
 			newGB.name = m_name;
 
-			if(m_lastTile)
-			{
-				m_lastTile.FloodTilesWithNewTile(newGB.AddComponent<Tile>());
-			}
-			else
-			{
-				newGB.AddComponent<Tile>();
-			}
-
 			newGB.AddComponent<SpriteRenderer>().sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(tile.Color));
 			newGB.AddComponent<Rigidbody2D>();
 			newGB.AddComponent<BoxCollider2D>();
 			var joint = newGB.AddComponent<FixedJoint2D>();
-			joint.connectedBody = m_lastTileRB;
+			joint.connectedBody = m_lastTileRB ? m_lastTileRB : m_parentTileRB;
+
+			Tile newTile = newGB.AddComponent<Tile>();
+			newTile.TileObject = this;
+			newTile.Color = tile.Color;
+			newTile.Position = tile.Position;
 
 			m_lastTileRB = newGB.GetComponent<Rigidbody2D>();
 
-			m_lastTile = newGB.GetComponent<Tile>();
-			m_lastTile.TileObject = this;
-			m_lastTile.Color = tile.Color;
-			m_lastTile.Position = tile.Position;
+			m_lastTile = newTile;
+			addedTiles.Add(m_lastTile);
+		}
+
+		foreach(var tile in addedTiles)
+		{
+			foreach(var other_tile in addedTiles)
+			{
+				if(tile == other_tile) continue;
+
+				if(tile.Position.x == other_tile.Position.x && tile.Position.y == other_tile.Position.y + 1)
+				{
+					tile.DownTile = other_tile;
+					other_tile.TopTile = tile;
+				}
+				else if(tile.Position.x == other_tile.Position.x && tile.Position.y == other_tile.Position.y - 1)
+				{
+					tile.TopTile = other_tile;
+					other_tile.DownTile = tile;
+				}
+				else if(tile.Position.y == other_tile.Position.y && tile.Position.x == other_tile.Position.x + 1)
+				{
+					tile.LeftTile = other_tile;
+					other_tile.RightTile = tile;
+				}
+				else if(tile.Position.y == other_tile.Position.y && tile.Position.x == other_tile.Position.x - 1)
+				{
+					tile.RightTile = other_tile;
+					other_tile.LeftTile = tile;
+				}
+			}
+
 		}
 	}
 }
