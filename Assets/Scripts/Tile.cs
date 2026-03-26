@@ -18,6 +18,8 @@ public class Tile : MonoBehaviour
 	
 	[SerializeField] float m_hp = 100;
 
+	private List<Tile> m_visitedTiles = new List<Tile>();
+
 	private TileInfo tileInfo {
 		get {
 			return new TileInfo(
@@ -62,7 +64,7 @@ public class Tile : MonoBehaviour
 				spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
 				left.AddComponent<Rigidbody2D>();
 				left.AddComponent<BoxCollider2D>();
-				left.AddComponent<RelativeJoint2D>();
+				left.AddComponent<RelativeJoint2D>().connectedBody = GetComponent<Rigidbody2D>();
 
 				m_left = left.AddComponent<Tile>();
 				m_left.TileObject = m_tileSO;
@@ -90,7 +92,8 @@ public class Tile : MonoBehaviour
 				spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
 				right.AddComponent<Rigidbody2D>();
 				right.AddComponent<BoxCollider2D>();
-				right.AddComponent<RelativeJoint2D>();
+				right.AddComponent<RelativeJoint2D>().connectedBody = GetComponent<Rigidbody2D>();
+;
 
 				m_right = right.AddComponent<Tile>();
 				m_right.TileObject = m_tileSO;
@@ -118,7 +121,8 @@ public class Tile : MonoBehaviour
 				spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
 				top.AddComponent<Rigidbody2D>();
 				top.AddComponent<BoxCollider2D>();
-				top.AddComponent<RelativeJoint2D>();
+				top.AddComponent<RelativeJoint2D>().connectedBody = GetComponent<Rigidbody2D>();
+;
 
 				m_top = top.AddComponent<Tile>();
 				m_top.TileObject = m_tileSO;
@@ -146,7 +150,8 @@ public class Tile : MonoBehaviour
 				spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
 				down.AddComponent<Rigidbody2D>();
 				down.AddComponent<BoxCollider2D>();
-				down.AddComponent<RelativeJoint2D>();
+				down.AddComponent<RelativeJoint2D>().connectedBody = GetComponent<Rigidbody2D>();
+;
 
 				m_down = down.AddComponent<Tile>();
 				m_down.TileObject = m_tileSO;
@@ -187,15 +192,13 @@ public class Tile : MonoBehaviour
 
 	void receiveNewTile(Tile tile)
 	{
-		// if(tile.m_pos.x == 1)
-		// {
-		// 	Debug.Log(m_pos.x);
-		// 	Debug.Log(tile.m_pos.x == m_pos.x + 1);
-		// 	Debug.Log(tile.m_pos.y);
-		// 	Debug.Log(m_pos.y);
-		// 	Debug.Log(tile.m_pos.y == m_pos.y);
-		// }
-		//
+		if(m_visitedTiles.Contains(tile))
+		{
+			return;
+		}
+
+		m_visitedTiles.Add(tile);
+
 		if(tile.m_pos.x == m_pos.x + 1 && tile.m_pos.y == m_pos.y)
 		{
 			m_right = tile;
