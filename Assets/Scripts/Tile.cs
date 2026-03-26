@@ -44,7 +44,15 @@ public class Tile : MonoBehaviour
 
 	public TileColor Color {
 		get { return m_col; }
-		set { m_col = value; }
+		set {
+			m_col = value;
+
+			if(!m_spr)
+			{
+				m_spr = GetComponent<SpriteRenderer>();
+			}
+			m_spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
+		}
 	}
 
 	public Vector2 Position {
@@ -282,16 +290,5 @@ public class Tile : MonoBehaviour
 	public void Remove()
 	{
 
-	}
-
-	public void ChangeColor(TileColor col)
-	{
-		m_col = col;
-
-		if(!m_spr)
-		{
-			m_spr = GetComponent<SpriteRenderer>();
-		}
-		m_spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(col));
 	}
 }

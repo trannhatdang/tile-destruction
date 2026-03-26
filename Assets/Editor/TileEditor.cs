@@ -73,7 +73,7 @@ public class TileEditor : EditorWindow
 	void changeColor()
 	{
 		m_currColor = (TileColor)m_colorField.value;
-		m_selectedTile.ChangeColor(m_currColor);
+		m_selectedTile.Color = m_currColor;
 	}
 
 	void upButton()
@@ -197,8 +197,8 @@ public class TileEditor : EditorWindow
 		if(m_selectedTile)
 		{
 			m_name = m_selectedTile.TileObject.Name;
-			m_currColor = m_selectedTile.Color;
-			m_colorField.value = m_selectedTile.Color;
+			m_currColor = (TileColor)m_colorField.value;
+			m_selectedTile.Color = m_currColor;
 		}
 		else
 		{
