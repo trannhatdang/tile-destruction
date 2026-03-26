@@ -37,7 +37,7 @@ public class Tile : MonoBehaviour
 
 	private bool m_isParent
 	{
-		get { return transform.parent == null; }
+		get { return transform.childCount > 0; }
 	}
 
 	public TileObjectSO TileObject {
@@ -260,7 +260,6 @@ public class Tile : MonoBehaviour
 	{
 		if(m_hp <= 0 && !m_isParent)
 		{
-			transform.parent = transform.parent.parent;
 			m_joint.enabled = false;
 		}
 	}

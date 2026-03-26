@@ -17,20 +17,20 @@ public class LevelEditor : EditorWindow
 	[MenuItem("Deng/Level Editor")]
 	public static void ShowWindow()
 	{
-		TileEditor wnd = GetWindow<TileEditor>();
+		LevelEditor wnd = GetWindow<LevelEditor>();
 		wnd.titleContent = new GUIContent("Level Editor");
 	}
 
 	void changeSelectedLevel()
 	{
-		m_selectedLevel = m_levelObjectField.value;
+		m_selectedLevel = (LevelSO)m_levelObjectField.value;
 
 		m_noLevelLabel.visible = (m_selectedLevel == null);
 		m_customizePane.visible = (m_selectedLevel != null);
 
 		if(m_selectedLevel != null)
 		{
-			m_selectedLevel.objectsChanged += objectsInfoChanged();
+			m_selectedLevel.objectsChanged += objectsInfoChanged;
 			objectsInfoChanged();
 		};
 	}
@@ -38,15 +38,16 @@ public class LevelEditor : EditorWindow
 	void objectsInfoChanged()
 	{
 		var objs = m_selectedLevel.Objects;
-		int size = objs.Count();
+		int size = objs.Count;
 		for(int i = 0; i < size; ++i)
 		{
 			VisualElement row = new VisualElement();
 			ObjectField objField = new ObjectField();
+			objField.objectType = typeof(TileObjectSO);
 			FloatField floatField = new FloatField();
 
-			objField.RegisterValueChangedCallback((evt) => m_selectedLevel.SetObject(objField.value, floatField.value, i));
-			floatField.RegisterValueChangedCallback((evt) => m_selectedLevel.SetObject(objField.value, floatField.value, i))
+			objField.RegisterValueChangedCallback((evt) => m_selectedLevel.SetObject((TileObjectSO)objField.value, floatField.value, i));
+			floatField.RegisterValueChangedCallback((evt) => m_selectedLevel.SetObject((TileObjectSO)objField.value, floatField.value, i));
 
 			row.Add(objField);
 			row.Add(floatField);
@@ -77,7 +78,7 @@ public class LevelEditor : EditorWindow
 		m_bottomPane.Add(m_noLevelLabel);
 
 		m_customizePane = new VisualElement();
-		m_customizePane.style.flexDirrection = FlexDirection.Column;
+		m_customizePane.style.flexDirection = FlexDirection.Column;
 		m_customizePane.style.left = 20;
 		m_customizePane.style.top = 20;
 
@@ -89,5 +90,6 @@ public class LevelEditor : EditorWindow
 		Rect bottomPaneRect = m_bottomPane.layout;
 
 		m_noLevelLabel.style.top = bottomPaneRect.height / 2 - 50;
+		m_noLevelLabel.style.left = bottomPaneRect.width / 2;
 	}
 }
