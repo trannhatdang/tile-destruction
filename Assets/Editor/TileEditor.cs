@@ -28,7 +28,7 @@ public class TileEditor : EditorWindow
 	{
 		if(Utils.LoadAsset<ScriptableObject>(m_name))
 		{
-			Debug.LogError("An object already exists with that name!");
+			Debug.LogError(m_name + " already exists!");
 			return;
 		}
 
@@ -44,7 +44,7 @@ public class TileEditor : EditorWindow
 		ScriptableObject tile = ScriptableObject.CreateInstance(typeof(TileObjectSO));
 		AssetDatabase.CreateAsset(tile, "Assets/ScriptableObjects/Objects/" + m_name + ".asset");
 		m_selectedTile.TileObject = (TileObjectSO)tile;
-		((TileObjectSO)tile).HeadTile = new TileInfo(null, null, null, null, Vector2.zero);
+		// ((TileObjectSO)tile).HeadTile = new TileInfo(null, null, null, null, Vector2.zero);
 		((TileObjectSO)tile).Name = m_name;
 
 		m_selectedTile.Color = m_currColor;
@@ -63,7 +63,8 @@ public class TileEditor : EditorWindow
 
 	void save()
 	{
-		m_selectedTile.Save();
+		m_selectedTile.TileObject.Name = m_name;
+		m_selectedTile.TileObject.SaveTileObject(m_selectedTile);
 	}
 
 	void load()
@@ -101,6 +102,25 @@ public class TileEditor : EditorWindow
 		Selection.activeGameObject = m_selectedTile.gameObject;
 	}
 
+	void selectionChanged()
+	{
+		if(Selection.count == 1 && Selection.activeGameObject && Selection.activeGameObject.GetComponent<Tile>())
+		{
+			m_selectedTile = Selection.activeGameObject.GetComponent<Tile>();
+			m_name = m_selectedTile.TileObject.Name;
+			m_nameField.value = m_name;
+			m_currColor = (TileColor)m_colorField.value;
+			m_selectedTile.Color = m_currColor;
+		}
+		else
+		{
+			m_selectedTile = null;
+			m_name = m_nameField.value;
+			m_currColor = TileColor.BLUE;
+			m_colorField.value = TileColor.BLUE;
+		}
+	}
+
 	[MenuItem("Deng/Tile Editor")]
 	public static void ShowWindow()
 	{
@@ -133,6 +153,7 @@ public class TileEditor : EditorWindow
 		m_nameField = new TextField();
 		m_nameField.style.flexGrow = 1;
 		m_nameField.value = m_name;
+		m_nameField.RegisterValueChangedCallback((evt) => { m_name = m_nameField.value; });
 		m_toptopPane.Add(m_nameField);
 
 		// Create Save button
@@ -191,34 +212,13 @@ public class TileEditor : EditorWindow
 		m_deleteButton.name = "Delete";
 		m_deleteButton.text = "Delete";
 		m_deleteButton.RegisterCallback<MouseUpEvent>((evt) => delete());
+
+		Selection.selectionChanged += selectionChanged;
 	}
 
 	void Update()
 	{
-		if(m_selectedTile)
-		{
-			m_name = m_selectedTile.TileObject.Name;
-			m_nameField.value = m_name;
-			m_currColor = (TileColor)m_colorField.value;
-			m_selectedTile.Color = m_currColor;
-		}
-		else
-		{
-			m_name = m_nameField.value;
-			m_currColor = TileColor.BLUE;
-			m_colorField.value = TileColor.BLUE;
-		}
-
 		m_createGBButton.style.top = m_bottomPaneRect.width / 2;
-
-		if(Selection.count == 1 && Selection.activeGameObject && Selection.activeGameObject.GetComponent<Tile>())
-		{
-			m_selectedTile = Selection.activeGameObject.GetComponent<Tile>();
-		}
-		else
-		{
-			m_selectedTile = null;
-		}
 
 		foreach(Button btn in m_dirButtons)
 		{

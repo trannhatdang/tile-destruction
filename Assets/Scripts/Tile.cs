@@ -23,13 +23,10 @@ public class Tile : MonoBehaviour
 
 	private TileInfo tileInfo {
 		get {
-			if(!m_tileInfo)
+			if(m_tileInfo == null)
 			{
 				m_tileInfo = new TileInfo(
-					m_left ? m_left.tileInfo : null,
-					m_right ? m_right.tileInfo : null,
-					m_top ? m_top.tileInfo : null,
-					m_down ? m_down.tileInfo : null,
+					m_col,
 					m_pos
 				);
 			}
@@ -273,23 +270,6 @@ public class Tile : MonoBehaviour
 	public void Hit(float damage)
 	{
 		m_hp -= damage;
-	}
-
-	public void Save()
-	{
-		if(!m_isParent)
-		{
-			transform.parent.GetComponent<Tile>().SaveTile();
-			return;
-		}
-
-		m_tileSO.HeadTile = new TileInfo(
-			m_left ? m_left.tileInfo : null,
-			m_right ? m_right.tileInfo : null,
-			m_top ? m_top.tileInfo : null,
-			m_down ? m_down.tileInfo : null,
-			m_pos
-		);
 	}
 
 	public void Remove()
