@@ -39,7 +39,7 @@ public class TileEditor : EditorWindow
 		selectedGB.AddComponent<SpriteRenderer>().sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_currColor));
 		selectedGB.AddComponent<Rigidbody2D>();
 		selectedGB.AddComponent<BoxCollider2D>();
-		selectedGB.AddComponent<RelativeJoint2D>();
+		selectedGB.AddComponent<FixedJoint2D>();
 
 		ScriptableObject tile = ScriptableObject.CreateInstance(typeof(TileObjectSO));
 		AssetDatabase.CreateAsset(tile, "Assets/ScriptableObjects/Objects/" + m_name + ".asset");
