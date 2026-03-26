@@ -44,7 +44,6 @@ public class TileEditor : EditorWindow
 		ScriptableObject tile = ScriptableObject.CreateInstance(typeof(TileObjectSO));
 		AssetDatabase.CreateAsset(tile, "Assets/ScriptableObjects/Objects/" + m_name + ".asset");
 		m_selectedTile.TileObject = (TileObjectSO)tile;
-		// ((TileObjectSO)tile).HeadTile = new TileInfo(null, null, null, null, Vector2.zero);
 		((TileObjectSO)tile).Name = m_name;
 
 		m_selectedTile.Color = m_currColor;

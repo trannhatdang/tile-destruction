@@ -276,4 +276,24 @@ public class Tile : MonoBehaviour
 	{
 
 	}
+
+	public Tile GetLeftTile()
+	{
+		return m_left;
+	}
+
+	public Tile GetRightTile()
+	{
+		return m_right;
+	}
+
+	public Tile GetTopTile()
+	{
+		return m_top;
+	}
+
+	public Tile GetDownTile()
+	{
+		return m_down;
+	}
 }

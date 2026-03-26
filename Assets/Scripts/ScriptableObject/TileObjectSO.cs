@@ -3,21 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
 
+[System.Serializable]
 public class TileInfo {
 	public TileInfo(TileColor col, Vector2 pos)
 	{
-		this.col = col;
-		this.pos = pos;
+		this.Color = col;
+		this.Position = pos;
 	}
 
-	TileColor col;
-	Vector2 pos;
+	public TileColor Color;
+	public Vector2 Position;
 }
 
 [CreateAssetMenu(fileName = "TileObjectSO", menuName = "ScriptableObjects/TileObjectSO")]
 public class TileObjectSO : ScriptableObject
 {
-	[SerializeField] List<TileInfo> m_tiles;
+	[SerializeField] List<TileInfo> m_tiles = new List<TileInfo>();
 	[SerializeField] string m_name;
 
 	public List<TileInfo> Tiles{
@@ -38,28 +39,37 @@ public class TileObjectSO : ScriptableObject
 
 	public void AddTile(Tile tile)
 	{
+		foreach(var tileinfo in m_tiles)
+		{
+			if(tileinfo.Position == tile.Position)
+			{
+				return;
+			}
+		}
+
 		TileInfo newTile = new TileInfo(tile.Color, tile.Position);
-		if(m_tiles.Contains(newTile)) return;
+
+		tile.gameObject.name = m_name;
 		m_tiles.Add(newTile);
 
-		if(tile.LeftTile)
+		if(tile.GetLeftTile())
 		{
-
+			AddTile(tile.GetLeftTile());
 		}
 
-		if(tile.RightTile)
+		if(tile.GetRightTile())
 		{
-
+			AddTile(tile.GetRightTile());
 		}
 
-		if(tile.DownTile)
+		if(tile.GetTopTile())
 		{
-
+			AddTile(tile.GetTopTile());
 		}
 
-		if(tile.TopTile)
+		if(tile.GetDownTile())
 		{
-
+			AddTile(tile.GetDownTile());
 		}
 	}
 
