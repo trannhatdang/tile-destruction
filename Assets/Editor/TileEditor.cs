@@ -45,6 +45,7 @@ public class TileEditor : EditorWindow
 		AssetDatabase.CreateAsset(tile, "Assets/ScriptableObjects/Objects/" + m_name + ".asset");
 		m_selectedTile.TileObject = (TileObjectSO)tile;
 		((TileObjectSO)tile).HeadTile = new TileInfo(null, null, null, null, Vector2.zero);
+		((TileObjectSO)tile).Name = m_name;
 
 		m_selectedTile.Color = m_currColor;
 
@@ -197,6 +198,7 @@ public class TileEditor : EditorWindow
 		if(m_selectedTile)
 		{
 			m_name = m_selectedTile.TileObject.Name;
+			m_nameField.value = m_name;
 			m_currColor = (TileColor)m_colorField.value;
 			m_selectedTile.Color = m_currColor;
 		}

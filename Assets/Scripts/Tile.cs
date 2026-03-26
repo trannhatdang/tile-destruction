@@ -284,7 +284,6 @@ public class Tile : MonoBehaviour
 			m_down ? m_down.tileInfo : null,
 			m_pos
 		);
-
 	}
 
 	public void Remove()
