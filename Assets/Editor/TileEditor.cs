@@ -1,4 +1,5 @@
 using UnityEditor;
+using UnityEditor.UIElements;
 using UnityEngine;
 using UnityEngine.UIElements;
 using System.Collections.Generic;
@@ -15,7 +16,11 @@ public class TileEditor : EditorWindow
 
 	private Tile m_selectedTile;
 	private TileColor m_currColor;
+	private TileObjectSO m_selectedTileObject;
 
+	private Label m_createOrLoadLabel;
+	private ObjectField m_loadObjectField;
+	private Button m_loadObjectButton;
 	private Button m_createGBButton;
 	private Button m_deleteButton;
 	private List<Button> m_dirButtons;
@@ -68,7 +73,12 @@ public class TileEditor : EditorWindow
 
 	void load()
 	{
-		Debug.Log("hi");
+		if(!m_selectedTileObject)
+		{
+			return;
+		}
+
+		m_selectedTileObject.Load();
 	}
 
 	void changeColor()
@@ -118,6 +128,16 @@ public class TileEditor : EditorWindow
 			m_currColor = TileColor.BLUE;
 			m_colorField.value = TileColor.BLUE;
 		}
+
+		foreach(Button btn in m_dirButtons)
+		{
+			btn.visible = m_selectedTile;
+		}
+
+		m_createGBButton.visible = !m_selectedTile;
+		m_createOrLoadLabel.visible = !m_selectedTile;
+		m_loadObjectField.visible = !m_selectedTile;
+		m_loadObjectButton.visible = !m_selectedTile;
 	}
 
 	[MenuItem("Deng/Tile Editor")]
@@ -162,16 +182,28 @@ public class TileEditor : EditorWindow
 		saveButton.RegisterCallback<MouseUpEvent>((evt) => save());
 		m_toptopPane.Add(saveButton);
 
-		// Create Load button
-		Button loadButton = new Button();
-		loadButton.name = "Load";
-		loadButton.text = "Load";
-		loadButton.RegisterCallback<MouseUpEvent>((evt) => load());
-		m_toptopPane.Add(loadButton);
-
 		m_colorField = new EnumField("Color: ", TileColor.BLUE);
 		m_colorField.RegisterValueChangedCallback((evt) => changeColor());
 		m_topbotPane.Add(m_colorField);
+
+		// Bottom Pane
+		// Create Load Button
+		m_loadObjectField = new ObjectField();
+		m_loadObjectField.name = "Load Object Field";
+		m_loadObjectField.objectType = typeof(TileObjectSO);
+		m_loadObjectField.RegisterValueChangedCallback((evt) => { m_selectedTileObject = (TileObjectSO)m_loadObjectField.value; });
+
+		m_bottomPane.Add(m_loadObjectField);
+
+		m_loadObjectButton = new Button();
+		m_loadObjectButton.name = "Load Object Button";
+		m_loadObjectButton.text = "Load";
+		m_loadObjectButton.RegisterCallback<MouseUpEvent>((evt) => load());
+
+		m_bottomPane.Add(m_loadObjectButton);
+
+		m_createOrLoadLabel = new Label("or");
+		m_bottomPane.Add(m_createOrLoadLabel);
 
 		m_createGBButton = new Button();
 		m_createGBButton.name = "Create Game Object";
@@ -213,22 +245,27 @@ public class TileEditor : EditorWindow
 		m_deleteButton.RegisterCallback<MouseUpEvent>((evt) => delete());
 
 		Selection.selectionChanged += selectionChanged;
-	}
-
-	void Update()
-	{
-		m_createGBButton.style.top = m_bottomPaneRect.width / 2;
 
 		foreach(Button btn in m_dirButtons)
 		{
 			btn.visible = m_selectedTile;
 		}
 		m_createGBButton.visible = !m_selectedTile;
+		m_loadObjectField.visible = !m_selectedTile;
+	}
+
+	void Update()
+	{
+		m_createGBButton.style.top = m_bottomPaneRect.width / 2;
 
 		m_bottomPaneRect = m_bottomPane.layout;
 
 		//Preprogramed values -- maybe bad
-		m_createGBButton.style.top = m_bottomPaneRect.height / 2;
+		m_createGBButton.style.top = m_bottomPaneRect.height / 2 - 90;
+		m_createOrLoadLabel.style.top = m_bottomPaneRect.height / 2 - 45;
+		m_createOrLoadLabel.style.left = m_bottomPaneRect.width / 2 - 5;
+		m_loadObjectField.style.top = m_bottomPaneRect.height / 2 + 20;
+		m_loadObjectButton.style.top = m_bottomPaneRect.height / 2 + 20;
 		
 		m_dirButtons[0].style.top = m_bottomPaneRect.height / 2 - 90;
 		m_dirButtons[0].style.left = m_bottomPaneRect.width / 2 - 30;

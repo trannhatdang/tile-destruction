@@ -86,8 +86,7 @@ public class Tile : MonoBehaviour
 				m_left.transform.localPosition = Vector2.Scale(new Vector2(0.125f, 0.125f), m_left.m_pos);
 				m_left.m_col = m_col;
 
-				floodTilesWithNewTile(m_left);
-				m_left.m_right = this;
+				FloodTilesWithNewTile(m_left);
 			}
 
 			return m_left;
@@ -116,8 +115,7 @@ public class Tile : MonoBehaviour
 				m_right.transform.localPosition = Vector2.Scale(new Vector2(0.125f, 0.125f), m_right.m_pos);
 				m_right.m_col = m_col;
 
-				floodTilesWithNewTile(m_right);
-				m_right.m_left = this;
+				FloodTilesWithNewTile(m_right);
 			}
 
 			return m_right;
@@ -146,8 +144,7 @@ public class Tile : MonoBehaviour
 				m_top.transform.localPosition = Vector2.Scale(new Vector2(0.125f, 0.125f), m_top.m_pos);
 				m_top.m_col = m_col;
 
-				floodTilesWithNewTile(m_top);
-				m_top.m_down = this;
+				FloodTilesWithNewTile(m_top);
 			}
 
 			return m_top;
@@ -177,15 +174,14 @@ public class Tile : MonoBehaviour
 				m_down.transform.localPosition = Vector2.Scale(new Vector2(0.125f, 0.125f), m_down.m_pos);
 				m_down.m_col = m_col;
 
-				floodTilesWithNewTile(m_down);
-				m_down.m_top = this;
+				FloodTilesWithNewTile(m_down);
 			}
 
 			return m_down;
 		}
 	}
 
-	void floodTilesWithNewTile(Tile tile)
+	public void FloodTilesWithNewTile(Tile tile)
 	{
 		if(m_left)
 		{
@@ -237,7 +233,8 @@ public class Tile : MonoBehaviour
 			m_down = tile;
 			tile.m_top = this;
 		}
-		floodTilesWithNewTile(tile);
+
+		FloodTilesWithNewTile(tile);
 	}
 
 	void Start()
