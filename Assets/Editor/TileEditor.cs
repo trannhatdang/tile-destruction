@@ -37,12 +37,17 @@ public class TileEditor : EditorWindow
 			return;
 		}
 
+		GameObject emptyGB = new GameObject();
+		emptyGB.name = m_name;
 		GameObject selectedGB = new GameObject();
+		selectedGB.transform.parent = emptyGB.transform;
 		selectedGB.name = m_name;
 
 		m_selectedTile = selectedGB.AddComponent<Tile>();
 		selectedGB.AddComponent<SpriteRenderer>().sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_currColor));
-		selectedGB.AddComponent<Rigidbody2D>().mass = 100;
+		var rb = selectedGB.AddComponent<Rigidbody2D>();
+		rb.mass = 1000;
+		rb.angularDrag = 0;
 		selectedGB.AddComponent<BoxCollider2D>();
 		selectedGB.AddComponent<FixedJoint2D>();
 
@@ -52,8 +57,8 @@ public class TileEditor : EditorWindow
 		((TileObjectSO)tile).Name = m_name;
 
 		m_selectedTile.Color = m_currColor;
-
 		m_selectedTile.Position = Vector2.zero;
+		m_selectedTile.IsParent = true;
 
 		Selection.activeGameObject = m_selectedTile.gameObject;
 	}
@@ -84,7 +89,11 @@ public class TileEditor : EditorWindow
 	void changeColor()
 	{
 		m_currColor = (TileColor)m_colorField.value;
-		m_selectedTile.Color = m_currColor;
+		
+		if(m_selectedTile != null)
+		{
+			m_selectedTile.Color = m_currColor;
+		}
 	}
 
 	void upButton()

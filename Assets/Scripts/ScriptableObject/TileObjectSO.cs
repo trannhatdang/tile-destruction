@@ -31,6 +31,10 @@ public class TileObjectSO : ScriptableObject
 		get { return m_tiles; }
 	}
 
+	public GameObject Prefab {
+		get { return m_prefab; }
+	}
+
 	public string Name {
 		get { return m_name; }
 		set { m_name = value; }
@@ -43,7 +47,18 @@ public class TileObjectSO : ScriptableObject
 		AddTile(tile);
 
 		var gb = Load();
-		m_prefab = PrefabUtility.SaveAsPrefabAsset(gb, $"Assets/Prefabs/{m_name}.prefab");
+		bool prefabSuccess;
+		m_prefab = PrefabUtility.SaveAsPrefabAsset(gb, $"Assets/Prefabs/{m_name}.prefab", out prefabSuccess);
+
+		if(prefabSuccess)
+		{
+			Debug.Log("Prefab Saved Successfully");
+		}
+		else
+		{
+			Debug.Log("Prefab not Saved Successfully");
+		}
+
 		DestroyImmediate(gb);
 	}
 
@@ -53,6 +68,7 @@ public class TileObjectSO : ScriptableObject
 		{
 			return;
 		}
+
 		foreach(var tileinfo in m_tiles)
 		{
 			if(tileinfo.Position == tile.Position)
@@ -90,6 +106,11 @@ public class TileObjectSO : ScriptableObject
 	public GameObject Load()
 	{
 		List<Tile> addedTiles = new List<Tile>();
+		this.name = m_name;
+
+		GameObject emptyGB = new GameObject();
+		Selection.activeGameObject = emptyGB;
+		emptyGB.name = m_name;
 		foreach(var tile in m_tiles)
 		{
 			if(tile.Position != Vector2.zero)
@@ -100,18 +121,20 @@ public class TileObjectSO : ScriptableObject
 			GameObject selectedGB = new GameObject();
 			selectedGB.tag = "Tile";
 			selectedGB.name = m_name;
+			selectedGB.transform.parent = emptyGB.transform;
 
 			m_parentTile = selectedGB.AddComponent<Tile>();
 			selectedGB.AddComponent<SpriteRenderer>().sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(tile.Color));
 			m_parentTileRB = selectedGB.AddComponent<Rigidbody2D>();
+			m_parentTileRB.mass = 1000;
+			m_parentTileRB.angularDrag = 0;
 			selectedGB.AddComponent<BoxCollider2D>();
 			selectedGB.AddComponent<FixedJoint2D>().enabled = false;
 
 			m_parentTile.TileObject = this;
 			m_parentTile.Color = tile.Color;
 			m_parentTile.Position = tile.Position;
-
-			Selection.activeGameObject = selectedGB;
+			m_parentTile.IsParent = true;
 
 			addedTiles.Add(m_parentTile);
 
@@ -127,15 +150,15 @@ public class TileObjectSO : ScriptableObject
 
 			GameObject newGB = new GameObject();
 			newGB.tag = "Tile";
-			newGB.transform.parent = m_parentTile.transform;
+			newGB.transform.parent = emptyGB.transform;
 			newGB.transform.localPosition = Vector2.Scale(new Vector2(0.125f, 0.125f), tile.Position);
 			newGB.name = m_name;
 
 			newGB.AddComponent<SpriteRenderer>().sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(tile.Color));
-			newGB.AddComponent<Rigidbody2D>();
+			newGB.AddComponent<Rigidbody2D>().angularDrag = 0;
 			newGB.AddComponent<BoxCollider2D>();
 			var joint = newGB.AddComponent<FixedJoint2D>();
-			joint.connectedBody = m_lastTileRB ? m_lastTileRB : m_parentTileRB;
+			joint.connectedBody = m_parentTileRB;
 
 			Tile newTile = newGB.AddComponent<Tile>();
 			newTile.TileObject = this;
@@ -178,6 +201,6 @@ public class TileObjectSO : ScriptableObject
 
 		}
 
-		return m_parentTile.gameObject;
+		return emptyGB;
 	}
 }

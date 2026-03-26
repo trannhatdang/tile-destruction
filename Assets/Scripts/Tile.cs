@@ -10,11 +10,13 @@ public class Tile : MonoBehaviour
 	[SerializeField] Tile m_top;
 	[SerializeField] Tile m_down;
 	[SerializeField] Vector2 m_pos;
+	[SerializeField] bool m_isParent;
 
 	[SerializeField] TileColor m_col;
-	[SerializeField] Joint2D m_joint;
+	[SerializeField] FixedJoint2D m_joint;
 	[SerializeField] SpriteRenderer m_spr;
 	[SerializeField] TileObjectSO m_tileSO;
+	[SerializeField] Rigidbody2D m_rb;
 	private TileInfo m_tileInfo;
 	
 	[SerializeField] float m_hp = 100;
@@ -35,10 +37,10 @@ public class Tile : MonoBehaviour
 		}
 	}
 
-	private bool m_isParent
+	public bool IsParent
 	{
-		get { return transform.childCount > 0 ||
-			(transform.parent == null); }
+		get { return m_isParent; }
+		set { m_isParent = value; }
 	}
 
 	public TileObjectSO TileObject {
@@ -72,15 +74,15 @@ public class Tile : MonoBehaviour
 				GameObject left = new GameObject();
 				left.tag = "Tile";
 				left.name = gameObject.name;
-				left.transform.parent = m_isParent ? transform : transform.parent;
+				left.transform.parent = transform.parent;
 
 				var spr = left.AddComponent<SpriteRenderer>();
 				spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
 				left.AddComponent<Rigidbody2D>();
 				left.AddComponent<BoxCollider2D>();
 
-				var joint = left.AddComponent<Joint2D>();
-				joint.connectedBody = GetComponent<Rigidbody2D>();
+				var joint = left.AddComponent<FixedJoint2D>();
+				joint.connectedBody = IsParent ? GetComponent<Rigidbody2D>() : transform.parent.GetComponent<Rigidbody2D>();
 
 				m_left = left.AddComponent<Tile>();
 				m_left.TileObject = m_tileSO;
@@ -89,6 +91,7 @@ public class Tile : MonoBehaviour
 				m_left.m_col = m_col;
 
 				floodTilesWithNewTile(m_left);
+				m_left.m_right = this;
 			}
 
 			return m_left;
@@ -103,14 +106,14 @@ public class Tile : MonoBehaviour
 				GameObject right = new GameObject();
 				right.tag = "Tile";
 				right.name = gameObject.name;
-				right.transform.parent = m_isParent ? transform : transform.parent;
+				right.transform.parent = transform.parent;
 
 				var spr = right.AddComponent<SpriteRenderer>();
 				spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
 				right.AddComponent<Rigidbody2D>();
 				right.AddComponent<BoxCollider2D>();
-				var joint = right.AddComponent<Joint2D>();
-				joint.connectedBody = GetComponent<Rigidbody2D>();
+				var joint = right.AddComponent<FixedJoint2D>();
+				joint.connectedBody = IsParent ? GetComponent<Rigidbody2D>() : transform.parent.GetComponent<Rigidbody2D>();
 
 				m_right = right.AddComponent<Tile>();
 				m_right.TileObject = m_tileSO;
@@ -119,6 +122,7 @@ public class Tile : MonoBehaviour
 				m_right.m_col = m_col;
 
 				floodTilesWithNewTile(m_right);
+				m_right.m_left = this;
 			}
 
 			return m_right;
@@ -133,14 +137,14 @@ public class Tile : MonoBehaviour
 				GameObject top = new GameObject();
 				top.tag = "Tile";
 				top.name = gameObject.name;
-				top.transform.parent = m_isParent ? transform : transform.parent;
+				top.transform.parent = transform.parent;
 
 				var spr = top.AddComponent<SpriteRenderer>();
 				spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
 				top.AddComponent<Rigidbody2D>();
 				top.AddComponent<BoxCollider2D>();
-				var joint = top.AddComponent<Joint2D>();
-				joint.connectedBody = GetComponent<Rigidbody2D>();
+				var joint = top.AddComponent<FixedJoint2D>();
+				joint.connectedBody = IsParent ? GetComponent<Rigidbody2D>() : transform.parent.GetComponent<Rigidbody2D>();
 
 				m_top = top.AddComponent<Tile>();
 				m_top.TileObject = m_tileSO;
@@ -149,6 +153,7 @@ public class Tile : MonoBehaviour
 				m_top.m_col = m_col;
 
 				floodTilesWithNewTile(m_top);
+				m_top.m_down = this;
 			}
 
 			return m_top;
@@ -163,15 +168,15 @@ public class Tile : MonoBehaviour
 				GameObject down = new GameObject();
 				down.tag = "Tile";
 				down.name = gameObject.name;
-				down.transform.parent = m_isParent ? transform : transform.parent;
+				down.transform.parent = transform.parent;
 
 				var spr = down.AddComponent<SpriteRenderer>();
 				spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
 				down.AddComponent<Rigidbody2D>();
 				down.AddComponent<BoxCollider2D>();
 
-				var joint = down.AddComponent<Joint2D>();
-				joint.connectedBody = GetComponent<Rigidbody2D>();
+				var joint = down.AddComponent<FixedJoint2D>();
+				joint.connectedBody = IsParent ? GetComponent<Rigidbody2D>() : transform.parent.GetComponent<Rigidbody2D>();
 
 				m_down = down.AddComponent<Tile>();
 				m_down.TileObject = m_tileSO;
@@ -180,6 +185,7 @@ public class Tile : MonoBehaviour
 				m_down.m_col = m_col;
 
 				floodTilesWithNewTile(m_down);
+				m_down.m_top = this;
 			}
 
 			return m_down;
@@ -252,17 +258,21 @@ public class Tile : MonoBehaviour
 			m_spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
 		}
 
-		m_joint = GetComponent<Joint2D>();
-		m_joint.enabled = !m_isParent;
+		m_joint = GetComponent<FixedJoint2D>();
+		m_joint.enabled = !IsParent;
+		m_rb = GetComponent<Rigidbody2D>();
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
-		if(m_hp <= 0 && !m_isParent)
+		if(m_hp <= 0 && !IsParent)
 		{
 			m_joint.enabled = false;
 		}
+		// m_rb.MovePosition(transform.position + new Vector3(0, -0.001f, 0));
+
+		
 	}
 
 	void OnMouseUpAsButton()

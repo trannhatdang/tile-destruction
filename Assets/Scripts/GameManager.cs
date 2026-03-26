@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-	[SerializeField] GameObject m_spawnPosition;
+	[SerializeField] Transform m_spawnPosition;
 	[SerializeField] LevelSO m_levelInfo;
 	[SerializeField] Abyss m_abyss;
 	[SerializeField] TopLimit m_topLimit;
@@ -25,14 +25,14 @@ public class GameManager : MonoBehaviour
 		
 		if(m_timeSinceLastDrop > objects[m_objIndex].timing && m_topLimit.IsHittingLimit)
 		{
-			dropTile();
+			Deng.ObjectPoolManager.SpawnObject(objects[m_objIndex++].obj.Prefab, m_spawnPosition.position, Quaternion.identity);
 			m_timeSinceLastDrop = 0.0f;
+
 		}
 	}
 
 	void dropTile()
 	{
-
 
 	}
 }
