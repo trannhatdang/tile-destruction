@@ -56,11 +56,11 @@ public class Tile : MonoBehaviour
 		}
 	}
 
-	public bool IsParent
-	{
-		get { return m_isParent; }
-		set { m_isParent = value; }
-	}
+	// public bool IsParent
+	// {
+	// 	get { return m_isParent; }
+	// 	set { m_isParent = value; }
+	// }
 
 	public TileObjectSO TileObject {
 		get { return m_tileSO; }
@@ -97,7 +97,9 @@ public class Tile : MonoBehaviour
 
 				var spr = left.AddComponent<SpriteRenderer>();
 				spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
-				left.AddComponent<Rigidbody2D>();
+				var rb = left.AddComponent<Rigidbody2D>();
+				rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+				rb.angularDrag = 0;
 				left.AddComponent<BoxCollider2D>();
 
 				m_left = left.AddComponent<Tile>();
@@ -130,7 +132,9 @@ public class Tile : MonoBehaviour
 
 				var spr = right.AddComponent<SpriteRenderer>();
 				spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
-				right.AddComponent<Rigidbody2D>();
+				var rb = right.AddComponent<Rigidbody2D>();
+				rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+				rb.angularDrag = 0;
 				right.AddComponent<BoxCollider2D>();
 
 				m_right = right.AddComponent<Tile>();
@@ -163,7 +167,9 @@ public class Tile : MonoBehaviour
 
 				var spr = top.AddComponent<SpriteRenderer>();
 				spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
-				top.AddComponent<Rigidbody2D>();
+				var rb = top.AddComponent<Rigidbody2D>();
+				rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+				rb.angularDrag = 0;
 				top.AddComponent<BoxCollider2D>();
 
 				m_top = top.AddComponent<Tile>();
@@ -196,7 +202,9 @@ public class Tile : MonoBehaviour
 
 				var spr = down.AddComponent<SpriteRenderer>();
 				spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
-				down.AddComponent<Rigidbody2D>();
+				var rb = down.AddComponent<Rigidbody2D>();
+				rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+				rb.angularDrag = 0;
 				down.AddComponent<BoxCollider2D>();
 
 				m_down = down.AddComponent<Tile>();
@@ -304,7 +312,7 @@ public class Tile : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if(m_hp <= 0 && !IsParent)
+		if(m_hp <= 0)
 		{
 			SetJoints(false);
 		}

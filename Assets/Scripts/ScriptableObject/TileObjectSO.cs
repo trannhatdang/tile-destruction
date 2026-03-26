@@ -126,7 +126,7 @@ public class TileObjectSO : ScriptableObject
 			m_parentTile = selectedGB.AddComponent<Tile>();
 			selectedGB.AddComponent<SpriteRenderer>().sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(tile.Color));
 			m_parentTileRB = selectedGB.AddComponent<Rigidbody2D>();
-			m_parentTileRB.mass = 1000;
+			m_parentTileRB.constraints = RigidbodyConstraints2D.FreezeRotation;
 			m_parentTileRB.angularDrag = 0;
 			selectedGB.AddComponent<BoxCollider2D>();
 
@@ -135,7 +135,7 @@ public class TileObjectSO : ScriptableObject
 			m_parentTile.TileObject = this;
 			m_parentTile.Color = tile.Color;
 			m_parentTile.Position = tile.Position;
-			m_parentTile.IsParent = true;
+			// m_parentTile.IsParent = true;
 
 			addedTiles.Add(m_parentTile);
 
@@ -156,7 +156,9 @@ public class TileObjectSO : ScriptableObject
 			newGB.name = m_name;
 
 			newGB.AddComponent<SpriteRenderer>().sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(tile.Color));
-			newGB.AddComponent<Rigidbody2D>().angularDrag = 0;
+			var rb = newGB.AddComponent<Rigidbody2D>();
+			rb.constraints = RigidbodyConstraints2D.FreezeRotation;
+			rb.angularDrag = 0;
 			newGB.AddComponent<BoxCollider2D>();
 			m_lastTileRB = newGB.GetComponent<Rigidbody2D>();
 

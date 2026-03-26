@@ -47,7 +47,7 @@ public class TileEditor : EditorWindow
 		selectedGB.AddComponent<SpriteRenderer>().sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_currColor));
 
 		var rb = selectedGB.AddComponent<Rigidbody2D>();
-		rb.mass = 1000;
+		rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 		rb.angularDrag = 0;
 		selectedGB.AddComponent<BoxCollider2D>();
 
@@ -60,7 +60,7 @@ public class TileEditor : EditorWindow
 
 		m_selectedTile.Color = m_currColor;
 		m_selectedTile.Position = Vector2.zero;
-		m_selectedTile.IsParent = true;
+		// m_selectedTile.IsParent = true;
 
 		Selection.activeGameObject = m_selectedTile.gameObject;
 	}
