@@ -144,7 +144,7 @@ public class TileEditor : EditorWindow
 	public static void ShowWindow()
 	{
 		TileEditor wnd = GetWindow<TileEditor>();
-		wnd.titleContent = new GUIContent("TileEditor");
+		wnd.titleContent = new GUIContent("Tile Editor");
 	}
 
 	public void CreateGUI()
