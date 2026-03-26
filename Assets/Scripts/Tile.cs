@@ -12,7 +12,7 @@ public class Tile : MonoBehaviour
 	[SerializeField] Vector2 m_pos;
 
 	[SerializeField] TileColor m_col;
-	[SerializeField] FixedJoint2D m_joint;
+	[SerializeField] Joint2D m_joint;
 	[SerializeField] SpriteRenderer m_spr;
 	[SerializeField] TileObjectSO m_tileSO;
 	private TileInfo m_tileInfo;
@@ -37,7 +37,8 @@ public class Tile : MonoBehaviour
 
 	private bool m_isParent
 	{
-		get { return transform.childCount > 0; }
+		get { return transform.childCount > 0 ||
+			(transform.parent == null); }
 	}
 
 	public TileObjectSO TileObject {
@@ -78,7 +79,7 @@ public class Tile : MonoBehaviour
 				left.AddComponent<Rigidbody2D>();
 				left.AddComponent<BoxCollider2D>();
 
-				var joint = left.AddComponent<FixedJoint2D>();
+				var joint = left.AddComponent<Joint2D>();
 				joint.connectedBody = GetComponent<Rigidbody2D>();
 
 				m_left = left.AddComponent<Tile>();
@@ -108,7 +109,7 @@ public class Tile : MonoBehaviour
 				spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
 				right.AddComponent<Rigidbody2D>();
 				right.AddComponent<BoxCollider2D>();
-				var joint = right.AddComponent<FixedJoint2D>();
+				var joint = right.AddComponent<Joint2D>();
 				joint.connectedBody = GetComponent<Rigidbody2D>();
 
 				m_right = right.AddComponent<Tile>();
@@ -138,7 +139,7 @@ public class Tile : MonoBehaviour
 				spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
 				top.AddComponent<Rigidbody2D>();
 				top.AddComponent<BoxCollider2D>();
-				var joint = top.AddComponent<FixedJoint2D>();
+				var joint = top.AddComponent<Joint2D>();
 				joint.connectedBody = GetComponent<Rigidbody2D>();
 
 				m_top = top.AddComponent<Tile>();
@@ -169,7 +170,7 @@ public class Tile : MonoBehaviour
 				down.AddComponent<Rigidbody2D>();
 				down.AddComponent<BoxCollider2D>();
 
-				var joint = down.AddComponent<FixedJoint2D>();
+				var joint = down.AddComponent<Joint2D>();
 				joint.connectedBody = GetComponent<Rigidbody2D>();
 
 				m_down = down.AddComponent<Tile>();
@@ -251,7 +252,7 @@ public class Tile : MonoBehaviour
 			m_spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
 		}
 
-		m_joint = GetComponent<FixedJoint2D>();
+		m_joint = GetComponent<Joint2D>();
 		m_joint.enabled = !m_isParent;
 	}
 

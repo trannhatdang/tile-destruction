@@ -19,6 +19,7 @@ public class TileInfo {
 public class TileObjectSO : ScriptableObject
 {
 	[SerializeField] List<TileInfo> m_tiles = new List<TileInfo>();
+	[SerializeField] GameObject m_prefab;
 	[SerializeField] string m_name;
 
 	private Tile m_parentTile;
@@ -40,10 +41,18 @@ public class TileObjectSO : ScriptableObject
 		m_tiles.Clear();
 
 		AddTile(tile);
+
+		var gb = Load();
+		m_prefab = PrefabUtility.SaveAsPrefabAsset(gb, $"Assets/Prefabs/{m_name}.prefab");
+		DestroyImmediate(gb);
 	}
 
 	public void AddTile(Tile tile)
 	{
+		if(tile == null)
+		{
+			return;
+		}
 		foreach(var tileinfo in m_tiles)
 		{
 			if(tileinfo.Position == tile.Position)
@@ -78,7 +87,7 @@ public class TileObjectSO : ScriptableObject
 		}
 	}
 
-	public void Load()
+	public GameObject Load()
 	{
 		List<Tile> addedTiles = new List<Tile>();
 		foreach(var tile in m_tiles)
@@ -168,5 +177,7 @@ public class TileObjectSO : ScriptableObject
 			}
 
 		}
+
+		return m_parentTile.gameObject;
 	}
 }

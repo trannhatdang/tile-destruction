@@ -42,7 +42,7 @@ public class TileEditor : EditorWindow
 
 		m_selectedTile = selectedGB.AddComponent<Tile>();
 		selectedGB.AddComponent<SpriteRenderer>().sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_currColor));
-		selectedGB.AddComponent<Rigidbody2D>();
+		selectedGB.AddComponent<Rigidbody2D>().mass = 100;
 		selectedGB.AddComponent<BoxCollider2D>();
 		selectedGB.AddComponent<FixedJoint2D>();
 
