@@ -63,7 +63,7 @@ public class TileEditor : EditorWindow
 
 	void save()
 	{
-
+		m_selectedTile.Save();
 	}
 
 	void load()

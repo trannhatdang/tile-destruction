@@ -15,6 +15,7 @@ public class Tile : MonoBehaviour
 	[SerializeField] FixedJoint2D m_joint;
 	[SerializeField] SpriteRenderer m_spr;
 	[SerializeField] TileObjectSO m_tileSO;
+	private TileInfo m_tileInfo;
 	
 	[SerializeField] float m_hp = 100;
 
@@ -22,13 +23,18 @@ public class Tile : MonoBehaviour
 
 	private TileInfo tileInfo {
 		get {
-			return new TileInfo(
-				m_left ? m_left.tileInfo : null,
-				m_right ? m_right.tileInfo : null,
-				m_top ? m_top.tileInfo : null,
-				m_down ? m_down.tileInfo : null,
-				m_pos
-			);
+			if(!m_tileInfo)
+			{
+				m_tileInfo = new TileInfo(
+					m_left ? m_left.tileInfo : null,
+					m_right ? m_right.tileInfo : null,
+					m_top ? m_top.tileInfo : null,
+					m_down ? m_down.tileInfo : null,
+					m_pos
+				);
+			}
+
+			return m_tileInfo;
 		}
 	}
 
@@ -269,7 +275,7 @@ public class Tile : MonoBehaviour
 		m_hp -= damage;
 	}
 
-	public void SaveTile()
+	public void Save()
 	{
 		if(!m_isParent)
 		{
