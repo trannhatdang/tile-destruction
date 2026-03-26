@@ -70,6 +70,7 @@ public class Tile : MonoBehaviour
 				m_left.transform.position = Vector2.Scale(new Vector2(0.125f, 0.125f), m_left.m_pos);
 				m_left.m_col = m_col;
 
+				floodTilesWithNewTile(m_left);
 				m_left.m_right = this;
 			}
 
@@ -97,6 +98,7 @@ public class Tile : MonoBehaviour
 				m_right.transform.position = Vector2.Scale(new Vector2(0.125f, 0.125f), m_right.m_pos);
 				m_right.m_col = m_col;
 
+				floodTilesWithNewTile(m_right);
 				m_right.m_left = this;
 			}
 
@@ -124,6 +126,7 @@ public class Tile : MonoBehaviour
 				m_top.transform.position = Vector2.Scale(new Vector2(0.125f, 0.125f), m_top.m_pos);
 				m_top.m_col = m_col;
 
+				floodTilesWithNewTile(m_top);
 				m_top.m_down = this;
 			}
 
@@ -151,11 +154,69 @@ public class Tile : MonoBehaviour
 				m_down.transform.position = Vector2.Scale(new Vector2(0.125f, 0.125f), m_down.m_pos);
 				m_down.m_col = m_col;
 
+				floodTilesWithNewTile(m_down);
 				m_down.m_top = this;
 			}
 
 			return m_down;
 		}
+	}
+
+	void floodTilesWithNewTile(Tile tile)
+	{
+		if(m_left)
+		{
+			m_left.receiveNewTile(tile);
+		}
+
+		if(m_right)
+		{
+			m_right.receiveNewTile(tile);
+		}
+		
+		if(m_top)
+		{
+			m_top.receiveNewTile(tile);
+		}
+
+		if(m_down)
+		{
+			m_down.receiveNewTile(tile);
+		}
+	}
+
+	void receiveNewTile(Tile tile)
+	{
+		// if(tile.m_pos.x == 1)
+		// {
+		// 	Debug.Log(m_pos.x);
+		// 	Debug.Log(tile.m_pos.x == m_pos.x + 1);
+		// 	Debug.Log(tile.m_pos.y);
+		// 	Debug.Log(m_pos.y);
+		// 	Debug.Log(tile.m_pos.y == m_pos.y);
+		// }
+		//
+		if(tile.m_pos.x == m_pos.x + 1 && tile.m_pos.y == m_pos.y)
+		{
+			m_right = tile;
+			tile.m_left = this;
+		}
+		else if(tile.m_pos.x == m_pos.x - 1 && tile.m_pos.y == m_pos.y)
+		{
+			m_left = tile;
+			tile.m_right = this;
+		}
+		else if(tile.m_pos.y == m_pos.y + 1 && tile.m_pos.x == m_pos.x)
+		{
+			m_top = tile;
+			tile.m_down = this;
+		}
+		else if(tile.m_pos.y == m_pos.y - 1 && tile.m_pos.x == m_pos.x)
+		{
+			m_down = tile;
+			tile.m_top = this;
+		}
+		floodTilesWithNewTile(tile);
 	}
 
 	void Start()
