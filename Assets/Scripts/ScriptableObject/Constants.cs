@@ -21,6 +21,7 @@ public class Constants : ScriptableObject
 
 	[SerializeField] private string m_biggerSawSprite;
 	[SerializeField] private string m_strongerSawSprite;
+	[SerializeField] private string m_fasterSawSprite;
 	[SerializeField] private string m_newSawSprite;
 	[SerializeField] private string m_blueTileSprite;
 	[SerializeField] private string m_greenTileSprite;
@@ -61,6 +62,8 @@ public class Constants : ScriptableObject
 				return m_biggerSawSprite;
 			case WeaponChoice.StrongerSaw:
 				return m_strongerSawSprite;
+			case WeaponChoice.FasterSaw:
+				return m_fasterSawSprite;
 			case WeaponChoice.NewSaw:
 				return m_newSawSprite;
 			default:

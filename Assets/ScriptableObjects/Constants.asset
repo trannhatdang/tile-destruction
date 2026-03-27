@@ -12,9 +12,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 000c63494ac0579499fb556f81c0bf77, type: 3}
   m_Name: Constants
   m_EditorClassIdentifier: 
+  m_biggerSawSprite: bigger-saw
+  m_strongerSawSprite: stronger-saw
+  m_fasterSawSprite: faster-saw
+  m_newSawSprite: saw
   m_blueTileSprite: blue-tile
   m_greenTileSprite: green-tile
   m_pinkTileSprite: pink-tile
   m_redTileSprite: red-tile
   m_whiteTileSprite: white-tile
   m_yellowTileSprite: yellow-tile
+  m_xp: 0

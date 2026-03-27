@@ -31,7 +31,7 @@ public class UIManager : MonoBehaviour
 
 	void Start()
 	{
-
+		m_placement = m_weaponPlacement.GetComponent<WeaponPlacement>();
 	}
 
 	void Update()

@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
 
 	void Start()
 	{
+		m_spawnedObjects = new List<GameObject>();
 		m_objects = m_levelInfo.Objects;
 		m_timings = m_levelInfo.Timings;
 
@@ -29,7 +30,8 @@ public class GameManager : MonoBehaviour
 		for(int i = 0; i < m_objects.Count; ++i)
 		{
 			var gb = Instantiate(m_objects[i].Prefab, m_spawnPosition.position, Quaternion.identity, transform);
-			gb.SetActive(true);
+			gb.SetActive(false);
+			m_spawnedObjects.Add(gb);
 		}
 
 		m_uiManager.WeaponSelect();

@@ -9,11 +9,11 @@ public class Saw : MonoBehaviour
 
 	public float Damage {
 		get { return m_damage; }
-		private set { m_damage = value; }
 	}
 
 	void Start()
 	{
+
 	}
 
 	void FixedUpdate()
@@ -44,6 +44,10 @@ public class Saw : MonoBehaviour
 			transform.localScale *= 1.1f;
 
 			return true;
+		}
+		else if(choice == WeaponChoice.FasterSaw)
+		{
+			m_speed *= 1.5f;
 		}
 
 		return false;
