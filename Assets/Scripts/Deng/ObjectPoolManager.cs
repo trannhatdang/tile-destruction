@@ -5,6 +5,13 @@ using UnityEngine.Pool;
 
 namespace Deng
 {
+	public enum PoolType
+	{
+		ParticleSystems,
+		GameObjects,
+		SoundFX
+	}
+
 	public class ObjectPoolManager : MonoBehaviour
 	{
 		[SerializeField] bool m_addToDontDestroyOnLoad = false;
@@ -17,13 +24,6 @@ namespace Deng
 
 		private static Dictionary<GameObject, ObjectPool<GameObject>> m_objectPools;
 		private static Dictionary<GameObject, GameObject> m_cloneToPrefabMap;
-
-		public enum PoolType
-		{
-			ParticleSystems,
-			GameObjects,
-			SoundFX
-		}
 
 		public static PoolType PoolingType;
 

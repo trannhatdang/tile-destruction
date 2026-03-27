@@ -22,4 +22,5 @@ MonoBehaviour:
   m_redTileSprite: red-tile
   m_whiteTileSprite: white-tile
   m_yellowTileSprite: yellow-tile
+  m_particles: CutParticles
   m_xp: 1

@@ -6,10 +6,10 @@ public class SawSlot : MonoBehaviour
 {
 	[SerializeField] GameObject sawPrefab;
 	[SerializeField] Saw m_saw;
-	[SerializeField] bool alreadyHasSaw = false;
+	[SerializeField] bool m_alreadyHasSaw = false;
 	public bool AddNewSaw()
 	{
-		if(alreadyHasSaw) return false;
+		if(m_alreadyHasSaw) return false;
 
 		if(!sawPrefab)
 		{
@@ -20,8 +20,9 @@ public class SawSlot : MonoBehaviour
 
 		if(gb)
 		{
-			gb.GetComponent<Saw>();
+			m_saw = gb.GetComponent<Saw>();
 		}
+		m_alreadyHasSaw = true;
 
 		return true;
 	}

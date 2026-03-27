@@ -51,6 +51,8 @@ public class PlayerAttack : MonoBehaviour
 
 	public float GetDamage(Vector3 pos)
 	{
+		Debug.Log(pos);
+		Debug.Log(transform.position);
 		return m_playerStats.GetDamage((pos - transform.position).magnitude);
 	}
 

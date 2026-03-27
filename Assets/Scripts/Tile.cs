@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,7 @@ using UnityEngine;
 public class Tile : MonoBehaviour
 {
 	// Start is called before the first frame update
+	[SerializeField] ParticleSystem m_part;
 	[SerializeField] Tile m_left;
 	[SerializeField] Tile m_right;
 	[SerializeField] Tile m_top;
@@ -15,6 +17,7 @@ public class Tile : MonoBehaviour
 	[SerializeField] FixedJoint2D m_downJoint;
 	[SerializeField] Vector2 m_pos;
 	[SerializeField] bool m_isParent;
+	[SerializeField] bool m_shaken = false;
 
 	[SerializeField] TileColor m_col;
 	[SerializeField] SpriteRenderer m_spr;
@@ -308,7 +311,23 @@ public class Tile : MonoBehaviour
 	{
 		if(m_hp <= 0)
 		{
+			Utils.ZoomCamera();
 			SetJoints(false);
+
+			if(!m_part)
+			{
+				m_part = Deng.ObjectPoolManager.SpawnObject<ParticleSystem>(Utils.LoadAsset<GameObject>(Constants.Instance.DEFAULT_PARTICLES).GetComponent<ParticleSystem>(), transform.position, Quaternion.identity, Deng.PoolType.ParticleSystems);
+				m_part.Play();
+			}
+		}
+
+		var col = m_spr.color;
+		col.a = Math.Max((m_hp / 100.0f) * 0.4f + 0.6f, 0.6f);
+		m_spr.color = col;
+
+		if(m_part && !m_part.isEmitting && m_part.gameObject.activeInHierarchy)
+		{
+			Deng.ObjectPoolManager.ReturnObjectToPool(m_part.gameObject, Deng.PoolType.ParticleSystems);
 		}
 	}
 
@@ -376,6 +395,11 @@ public class Tile : MonoBehaviour
 
 	public void Hit(float damage)
 	{
+		if(!m_shaken)
+		{
+			Utils.ShakeCamera();
+			m_shaken = true;
+		}
 		m_hp -= damage;
 	}
 

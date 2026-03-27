@@ -29,6 +29,7 @@ public class Constants : ScriptableObject
 	[SerializeField] private string m_redTileSprite;
 	[SerializeField] private string m_whiteTileSprite;
 	[SerializeField] private string m_yellowTileSprite;
+	[SerializeField] private string m_particles;
 	[SerializeField] private int m_xp;
 
 	public string BLUE_TILE_SPRITE {
@@ -48,6 +49,9 @@ public class Constants : ScriptableObject
 	}
 	public string YELLOW_TILE_SPRITE {
 		get { return m_yellowTileSprite; }
+	}
+	public string DEFAULT_PARTICLES {
+		get { return m_particles; }
 	}
 
 	public int XP {

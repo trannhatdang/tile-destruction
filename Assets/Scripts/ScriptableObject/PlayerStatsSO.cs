@@ -17,6 +17,7 @@ public class PlayerStatsSO : ScriptableObject
 
 	public float GetDamage(float dist)
 	{
+		Debug.Log(dist);
 		return Math.Min(((m_minDmg * dist) / m_damageRadius), m_maxDmg);
 	}
 

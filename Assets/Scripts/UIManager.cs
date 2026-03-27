@@ -3,13 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-
 public enum GameState {
 	Playing,
 	Paused,
 	WeaponSelection,
 	WeaponPlacement,
-	Loading,
 }
 
 public class UIManager : MonoBehaviour
@@ -18,7 +16,7 @@ public class UIManager : MonoBehaviour
 	[SerializeField] Button m_pauseButton;
 	[SerializeField] GameObject m_weaponSelection;
 	[SerializeField] GameObject m_weaponPlacement;
-	[SerializeField] GameObject m_loadingScreen;
+	[SerializeField] LoadingScreen m_loadingScreen;
 	[SerializeField] WeaponSelectionButton m_selBtn1;
 	[SerializeField] WeaponSelectionButton m_selBtn2;
 
@@ -39,7 +37,6 @@ public class UIManager : MonoBehaviour
 	{
 		m_weaponSelection.SetActive(m_state == GameState.WeaponSelection);
 		m_weaponPlacement.SetActive(m_state == GameState.WeaponPlacement);
-		m_loadingScreen.SetActive(m_state == GameState.Loading);
 
 		if(m_state == GameState.Paused)
 		{
@@ -62,6 +59,7 @@ public class UIManager : MonoBehaviour
 	{
 		m_state = GameState.WeaponSelection;
 
+		m_gameManager.Pause();
 		if(overr)
 		{
 			m_weaponSelection.SetActive(true);
@@ -81,5 +79,17 @@ public class UIManager : MonoBehaviour
 	{
 		m_gameManager.Unpause();
 		m_state = GameState.Playing;
+	}
+
+	public void LoadingScreen(bool val)
+	{
+		if(val)
+		{
+			m_loadingScreen.MoveIn();
+		}
+		else
+		{
+			m_loadingScreen.MoveOut();
+		}
 	}
 }

@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3f83e9aee402c649809c062d80c5bfa, type: 3}
+  m_Name: Level4
+  m_EditorClassIdentifier: 
+  m_objects:
+  - {fileID: 11400000, guid: fd240987883f51246bd9ebc0c6f2bf65, type: 2}
+  - {fileID: 11400000, guid: cc409633e3e242843b3b7e953fda9275, type: 2}
+  - {fileID: 11400000, guid: fd240987883f51246bd9ebc0c6f2bf65, type: 2}
+  - {fileID: 11400000, guid: cc409633e3e242843b3b7e953fda9275, type: 2}
+  - {fileID: 11400000, guid: fd240987883f51246bd9ebc0c6f2bf65, type: 2}
+  - {fileID: 11400000, guid: cc409633e3e242843b3b7e953fda9275, type: 2}
+  m_timings:
+  - 2
+  - 4
+  - 20
+  - 6
+  - 10
+  - 20
+  m_levelUpXP: 25
+  m_passLevelXP: 200
