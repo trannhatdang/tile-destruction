@@ -32,6 +32,7 @@ public class Saw : MonoBehaviour
 
 	public bool Upgrade(WeaponChoice choice)
 	{
+		Debug.Log("HIHIHIHIH");
 		if(choice == WeaponChoice.StrongerSaw)
 		{
 			m_damage *= 2;

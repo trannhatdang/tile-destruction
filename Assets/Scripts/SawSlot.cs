@@ -5,6 +5,7 @@ using UnityEngine;
 public class SawSlot : MonoBehaviour
 {
 	[SerializeField] GameObject sawPrefab;
+	[SerializeField] Saw m_saw;
 	[SerializeField] bool alreadyHasSaw = false;
 	public bool AddNewSaw()
 	{
@@ -15,7 +16,24 @@ public class SawSlot : MonoBehaviour
 			return false;
 		}
 
-		Instantiate(sawPrefab, transform.position, Quaternion.identity, transform);
+		var gb = Instantiate(sawPrefab, transform.position, Quaternion.identity, transform);
+
+		if(gb)
+		{
+			gb.GetComponent<Saw>();
+		}
+
+		return true;
+	}
+
+	public bool Upgrade(WeaponChoice choice)
+	{
+		if(!m_saw)
+		{
+			return false;
+		}
+
+		m_saw.Upgrade(choice);
 
 		return true;
 	}

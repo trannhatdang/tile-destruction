@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+	[SerializeField] PlayerAttack m_playerAttack;
 	[SerializeField] UIManager m_uiManager;
 	[SerializeField] Transform m_spawnPosition;
 	[SerializeField] LevelSO m_levelInfo;
@@ -12,6 +13,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] float m_timeSinceLastDrop;
 	[SerializeField] int m_objIndex;
 	[SerializeField] int m_xp;
+	[SerializeField] int m_currLevel = 1;
 
 	private List<TileObjectSO> m_objects;
 	private List<float> m_timings;
@@ -34,7 +36,7 @@ public class GameManager : MonoBehaviour
 			m_spawnedObjects.Add(gb);
 		}
 
-		m_uiManager.WeaponSelect();
+		m_uiManager.WeaponSelect(true, WeaponChoice.NewSaw, WeaponChoice.NewSaw);
 	}
 	
 	void Update()
@@ -54,9 +56,10 @@ public class GameManager : MonoBehaviour
 			nextLevel();
 		}
 
-		if(m_xp > m_levelInfo.LevelUpXP)
+		if(m_xp > m_levelInfo.LevelUpXP * m_currLevel)
 		{
 			m_uiManager.WeaponSelect();
+			m_currLevel++;
 		}
 
 	}
@@ -74,11 +77,13 @@ public class GameManager : MonoBehaviour
 
 	public void Pause()
 	{
+		m_playerAttack.Pause();
 		Time.timeScale = 0.0f;
 	}
 
 	public void Unpause()
 	{
+		m_playerAttack.Unpause();
 		Time.timeScale = 1.0f;
 	}
 }

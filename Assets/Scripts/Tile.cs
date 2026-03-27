@@ -56,12 +56,6 @@ public class Tile : MonoBehaviour
 		}
 	}
 
-	// public bool IsParent
-	// {
-	// 	get { return m_isParent; }
-	// 	set { m_isParent = value; }
-	// }
-
 	public TileObjectSO TileObject {
 		get { return m_tileSO; }
 		set { m_tileSO = value; }
@@ -320,7 +314,17 @@ public class Tile : MonoBehaviour
 
 	void OnMouseUpAsButton()
 	{
-		Hit(25); //GameManager.PlayerDamage?
+		//Hit(25); //GameManager.PlayerDamage?
+	}
+
+	void OnTriggerEnter2D(Collider2D other)
+	{
+		if(!other.CompareTag("PlayerAttack"))
+		{
+			return;
+		}
+
+		Hit(other.gameObject.GetComponent<PlayerAttack>().GetDamage(transform.position));
 	}
 
 	public void InitializeJoints()

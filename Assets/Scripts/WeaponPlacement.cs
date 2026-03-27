@@ -8,6 +8,8 @@ public class WeaponPlacement : MonoBehaviour
 	[SerializeField] UIManager m_uiManager;
 	[SerializeField] SpriteRenderer m_spr;
 	[SerializeField] WeaponChoice m_choice;
+	[SerializeField] WeaponSelectionButton m_btn1;
+	[SerializeField] WeaponSelectionButton m_btn2;
 
 	InputAction mouseAction;
 	InputAction mousePosition;
@@ -20,31 +22,36 @@ public class WeaponPlacement : MonoBehaviour
 
 	void Update()
 	{
-		transform.position = mousePosition.ReadValue<Vector2>();
+		Vector2 mousePos = Camera.main.ScreenToWorldPoint(mousePosition.ReadValue<Vector2>());
+		(transform as RectTransform).position = mousePos;
 
 		if(!mouseAction.IsPressed())
 		{
 			return;
 		}
 
-		RaycastHit2D hit = Physics2D.Raycast(Camera.main.ScreenToWorldPoint(mousePosition.ReadValue<Vector2>()), Vector2.zero);
+		RaycastHit2D hit = Physics2D.Raycast(mousePos, Vector2.zero);
 		if(hit.collider == null)
 		{
 			return;
 		}
 
-		Saw saw = hit.collider.gameObject.GetComponent<Saw>();
 		SawSlot sawSlot = hit.collider.gameObject.GetComponent<SawSlot>();
+		Debug.Log(hit.collider.gameObject.name);
+		if(!sawSlot)
+		{
+			return;
+		}
 
 		bool res = false;
 
-		if(m_choice == WeaponChoice.NewSaw && sawSlot)
+		if(m_choice == WeaponChoice.NewSaw)
 		{
 			res = sawSlot.AddNewSaw();
 		}
-		else if(m_choice != WeaponChoice.NewSaw && saw)
+		else if(m_choice != WeaponChoice.NewSaw)
 		{
-			res = saw.Upgrade(m_choice);
+			res = sawSlot.Upgrade(m_choice);
 		}
 
 		if(res)
@@ -58,5 +65,4 @@ public class WeaponPlacement : MonoBehaviour
 		m_spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetWeaponPlacementSprite(choice));
 		m_choice = choice;
 	}
-
 }

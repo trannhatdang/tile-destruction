@@ -25,11 +25,18 @@ public class WeaponSelectionButton : MonoBehaviour
 			m_img = GetComponent<Image>();
 
 		}
+
 		m_img.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetWeaponPlacementSprite(m_choice));
 	}
 
 	public void OnClick()
 	{
 		m_uiManager.WeaponPlace(m_choice);
+	}
+
+	public void SetChoice(WeaponChoice choice)
+	{
+		m_choice = choice;
+		m_img.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetWeaponPlacementSprite(m_choice));
 	}
 }

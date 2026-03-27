@@ -19,6 +19,8 @@ public class UIManager : MonoBehaviour
 	[SerializeField] GameObject m_weaponSelection;
 	[SerializeField] GameObject m_weaponPlacement;
 	[SerializeField] GameObject m_loadingScreen;
+	[SerializeField] WeaponSelectionButton m_selBtn1;
+	[SerializeField] WeaponSelectionButton m_selBtn2;
 
 	private WeaponPlacement m_placement;
 	private GameState m_oldState;
@@ -26,7 +28,6 @@ public class UIManager : MonoBehaviour
 
 	public GameState State {
 		get { return m_state; }
-		set { m_state = value; }
 	}
 
 	void Start()
@@ -57,19 +58,28 @@ public class UIManager : MonoBehaviour
 		m_state = m_oldState;
 	}
 
-	public void WeaponSelect()
+	public void WeaponSelect(bool overr = false, WeaponChoice choice1 = WeaponChoice.NewSaw, WeaponChoice choice2 = WeaponChoice.NewSaw)
 	{
 		m_state = GameState.WeaponSelection;
+
+		if(overr)
+		{
+			m_weaponSelection.SetActive(true);
+			m_selBtn1.SetChoice(choice1);
+			m_selBtn2.SetChoice(choice2);
+		}
 	}
 
 	public void WeaponPlace(WeaponChoice choice)
 	{
+		m_gameManager.Pause();
 		m_state = GameState.WeaponPlacement;
 		m_placement.Set(choice);
 	}
 
 	public void Resume()
 	{
+		m_gameManager.Unpause();
 		m_state = GameState.Playing;
 	}
 }

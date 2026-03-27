@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: Level1
   m_EditorClassIdentifier: 
   m_objects:
-  - {fileID: 11400000, guid: 6ae6edc92e29deb49b5708b3881e39b0, type: 2}
-  - {fileID: 11400000, guid: 6ae6edc92e29deb49b5708b3881e39b0, type: 2}
-  - {fileID: 11400000, guid: 6ae6edc92e29deb49b5708b3881e39b0, type: 2}
-  - {fileID: 11400000, guid: 6ae6edc92e29deb49b5708b3881e39b0, type: 2}
+  - {fileID: 11400000, guid: fbd0c98449bbd3a4ea6ff5dd7fcaa476, type: 2}
+  - {fileID: 11400000, guid: fbd0c98449bbd3a4ea6ff5dd7fcaa476, type: 2}
+  - {fileID: 11400000, guid: fbd0c98449bbd3a4ea6ff5dd7fcaa476, type: 2}
+  - {fileID: 11400000, guid: fbd0c98449bbd3a4ea6ff5dd7fcaa476, type: 2}
   m_timings:
-  - 1e+16
+  - 1
   - 5
   - 7
   - 10

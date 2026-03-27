@@ -15,11 +15,11 @@ MonoBehaviour:
   m_biggerSawSprite: bigger-saw
   m_strongerSawSprite: stronger-saw
   m_fasterSawSprite: faster-saw
-  m_newSawSprite: saw
+  m_newSawSprite: new-saw
   m_blueTileSprite: blue-tile
   m_greenTileSprite: green-tile
   m_pinkTileSprite: pink-tile
   m_redTileSprite: red-tile
   m_whiteTileSprite: white-tile
   m_yellowTileSprite: yellow-tile
-  m_xp: 0
+  m_xp: 1
