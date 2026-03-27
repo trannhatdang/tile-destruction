@@ -29,4 +29,24 @@ public class Saw : MonoBehaviour
 		}
 
 	}
+
+	public bool Upgrade(WeaponChoice choice)
+	{
+		if(choice == WeaponChoice.StrongerSaw)
+		{
+			m_damage *= 2;
+			m_speed *= 1.1f;
+
+			return true;
+		}
+		else if(choice == WeaponChoice.BiggerSaw)
+		{
+			transform.localScale *= 1.1f;
+
+			return true;
+		}
+
+		return false;
+	}
+
 }

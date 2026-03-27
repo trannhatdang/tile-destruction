@@ -19,6 +19,9 @@ public class Constants : ScriptableObject
 		}
 	}
 
+	[SerializeField] private string m_biggerSawSprite;
+	[SerializeField] private string m_strongerSawSprite;
+	[SerializeField] private string m_newSawSprite;
 	[SerializeField] private string m_blueTileSprite;
 	[SerializeField] private string m_greenTileSprite;
 	[SerializeField] private string m_pinkTileSprite;
@@ -49,7 +52,21 @@ public class Constants : ScriptableObject
 	public int XP {
 		get { return m_xp; }
 	}
-
+	
+	public string GetWeaponPlacementSprite(WeaponChoice choice)
+	{
+		switch(choice)
+		{
+			case WeaponChoice.BiggerSaw:
+				return m_biggerSawSprite;
+			case WeaponChoice.StrongerSaw:
+				return m_strongerSawSprite;
+			case WeaponChoice.NewSaw:
+				return m_newSawSprite;
+			default:
+				return "";
+		}
+	}
 
 	public string GetColor(TileColor col)
 	{

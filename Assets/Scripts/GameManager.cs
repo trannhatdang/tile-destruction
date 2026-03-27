@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+	[SerializeField] UIManager m_uiManager;
 	[SerializeField] Transform m_spawnPosition;
 	[SerializeField] LevelSO m_levelInfo;
 	[SerializeField] Abyss m_abyss;
@@ -24,16 +25,19 @@ public class GameManager : MonoBehaviour
 
 		m_abyss.onTileEnter += onTileEnter;
 
+		//LOADING SCREEN LOGIC HERE
 		for(int i = 0; i < m_objects.Count; ++i)
 		{
 			var gb = Instantiate(m_objects[i].Prefab, m_spawnPosition.position, Quaternion.identity, transform);
 			gb.SetActive(true);
 		}
+
+		m_uiManager.WeaponSelect();
 	}
 	
 	void Update()
 	{
-		if(m_objIndex >= m_objects.Count) return;
+		if(m_objIndex >= m_objects.Count) m_objIndex = 0;
 
 		m_timeSinceLastDrop += Time.deltaTime;
 		
@@ -42,11 +46,37 @@ public class GameManager : MonoBehaviour
 			m_spawnedObjects[m_objIndex++].SetActive(true);
 			m_timeSinceLastDrop = 0.0f;
 		}
+
+		if(m_xp > m_levelInfo.PassLevelXP)
+		{
+			nextLevel();
+		}
+
+		if(m_xp > m_levelInfo.LevelUpXP)
+		{
+			m_uiManager.WeaponSelect();
+		}
+
 	}
 
 	void onTileEnter(Tile tile)
 	{
 		m_xp += Constants.Instance.XP;
 		Destroy(tile.gameObject);
+	}
+
+	void nextLevel()
+	{
+
+	}
+
+	public void Pause()
+	{
+		Time.timeScale = 0.0f;
+	}
+
+	public void Unpause()
+	{
+		Time.timeScale = 1.0f;
 	}
 }
