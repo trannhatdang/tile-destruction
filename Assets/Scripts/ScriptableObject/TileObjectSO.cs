@@ -48,16 +48,17 @@ public class TileObjectSO : ScriptableObject
 
 		var gb = Load();
 		bool prefabSuccess;
-		m_prefab = PrefabUtility.SaveAsPrefabAsset(gb, $"Assets/Prefabs/{m_name}.prefab", out prefabSuccess);
-
-		if(prefabSuccess)
-		{
-			Debug.Log("Prefab Saved Successfully");
-		}
-		else
-		{
-			Debug.Log("Prefab not Saved Successfully");
-		}
+		//UNCOMMENT
+		// m_prefab = PrefabUtility.SaveAsPrefabAsset(gb, $"Assets/Prefabs/{m_name}.prefab", out prefabSuccess);
+		//
+		// if(prefabSuccess)
+		// {
+		// 	Debug.Log("Prefab Saved Successfully");
+		// }
+		// else
+		// {
+		// 	Debug.Log("Prefab not Saved Successfully");
+		// }
 
 		DestroyImmediate(gb);
 	}
@@ -109,7 +110,7 @@ public class TileObjectSO : ScriptableObject
 		this.name = m_name;
 
 		GameObject emptyGB = new GameObject();
-		Selection.activeGameObject = emptyGB;
+		// Selection.activeGameObject = emptyGB; //UNCOMMENT
 		emptyGB.name = m_name;
 		foreach(var tile in m_tiles)
 		{
@@ -124,7 +125,7 @@ public class TileObjectSO : ScriptableObject
 			selectedGB.transform.parent = emptyGB.transform;
 
 			m_parentTile = selectedGB.AddComponent<Tile>();
-			selectedGB.AddComponent<SpriteRenderer>().sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(tile.Color));
+			selectedGB.AddComponent<SpriteRenderer>().sprite = Constants.Instance.GetColor(tile.Color);
 			m_parentTileRB = selectedGB.AddComponent<Rigidbody2D>();
 			m_parentTileRB.constraints = RigidbodyConstraints2D.FreezeRotation;
 			m_parentTileRB.angularDrag = 0;
@@ -155,7 +156,7 @@ public class TileObjectSO : ScriptableObject
 			newGB.transform.localPosition = Vector2.Scale(new Vector2(0.125f, 0.125f), tile.Position);
 			newGB.name = m_name;
 
-			newGB.AddComponent<SpriteRenderer>().sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(tile.Color));
+			newGB.AddComponent<SpriteRenderer>().sprite = Constants.Instance.GetColor(tile.Color);
 			var rb = newGB.AddComponent<Rigidbody2D>();
 			rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 			rb.angularDrag = 0;

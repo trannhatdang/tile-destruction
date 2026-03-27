@@ -26,7 +26,7 @@ public class WeaponSelectionButton : MonoBehaviour
 
 		}
 
-		m_img.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetWeaponPlacementSprite(m_choice));
+		m_img.sprite = Constants.Instance.GetWeaponPlacementSprite(m_choice);
 	}
 
 	public void OnClick()
@@ -37,6 +37,6 @@ public class WeaponSelectionButton : MonoBehaviour
 	public void SetChoice(WeaponChoice choice)
 	{
 		m_choice = choice;
-		m_img.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetWeaponPlacementSprite(m_choice));
+		m_img.sprite = Constants.Instance.GetWeaponPlacementSprite(m_choice);
 	}
 }

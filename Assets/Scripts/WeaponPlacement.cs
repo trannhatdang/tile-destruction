@@ -62,7 +62,7 @@ public class WeaponPlacement : MonoBehaviour
 
 	public void Set(WeaponChoice choice)
 	{
-		m_spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetWeaponPlacementSprite(choice));
+		m_spr.sprite = Constants.Instance.GetWeaponPlacementSprite(choice);
 		m_choice = choice;
 	}
 }

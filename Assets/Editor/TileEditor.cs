@@ -44,7 +44,7 @@ public class TileEditor : EditorWindow
 		selectedGB.name = m_name;
 
 		m_selectedTile = selectedGB.AddComponent<Tile>();
-		selectedGB.AddComponent<SpriteRenderer>().sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_currColor));
+		selectedGB.AddComponent<SpriteRenderer>().sprite = Constants.Instance.GetColor(m_currColor);
 
 		var rb = selectedGB.AddComponent<Rigidbody2D>();
 		rb.constraints = RigidbodyConstraints2D.FreezeRotation;

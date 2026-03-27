@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 000c63494ac0579499fb556f81c0bf77, type: 3}
+  m_Name: Constants
+  m_EditorClassIdentifier: 
+  m_biggerSawSprite: {fileID: 21300000, guid: 1161f9b8320d2014bae77d8382dc448d, type: 3}
+  m_strongerSawSprite: {fileID: 21300000, guid: bf0e05078535cec48bc76471501afeb9, type: 3}
+  m_fasterSawSprite: {fileID: 21300000, guid: abc06b3fff28a0145a267adf2721c33b, type: 3}
+  m_newSawSprite: {fileID: 21300000, guid: b633db03011f31a408ed93699dd2c6c7, type: 3}
+  m_blueTileSprite: {fileID: 21300000, guid: e55e24f233eed014497ad8423ca64c69, type: 3}
+  m_greenTileSprite: {fileID: 21300000, guid: d81b98717a7fdba4a847fcb02a13552f, type: 3}
+  m_pinkTileSprite: {fileID: 21300000, guid: f1c32e15e69e04d4a9093189792f28b2, type: 3}
+  m_redTileSprite: {fileID: 21300000, guid: 34aed28f254ea1d4ab8364543e1a347f, type: 3}
+  m_whiteTileSprite: {fileID: 21300000, guid: 9728a76f48c4e1a4cb1fee95942d3527, type: 3}
+  m_yellowTileSprite: {fileID: 21300000, guid: 65f06cd0241977b4983fd8b78e5d43fa, type: 3}
+  m_particles: {fileID: 6085831654029639022, guid: c72de22d91313cd4f8fbcc98b93b70c6, type: 3}
+  m_xp: 1

@@ -12,45 +12,45 @@ public class Constants : ScriptableObject
 	public static Constants Instance {
 		get {
 			if (instance == null) {
-				instance = AssetDatabase.LoadAssetAtPath<Constants>(AssetDatabase.GUIDToAssetPath(AssetDatabase.FindAssets(constantSO)[0]));
+				instance = Resources.Load<Constants>("Constants");
 			}
 
 		return instance;
 		}
 	}
 
-	[SerializeField] private string m_biggerSawSprite;
-	[SerializeField] private string m_strongerSawSprite;
-	[SerializeField] private string m_fasterSawSprite;
-	[SerializeField] private string m_newSawSprite;
-	[SerializeField] private string m_blueTileSprite;
-	[SerializeField] private string m_greenTileSprite;
-	[SerializeField] private string m_pinkTileSprite;
-	[SerializeField] private string m_redTileSprite;
-	[SerializeField] private string m_whiteTileSprite;
-	[SerializeField] private string m_yellowTileSprite;
-	[SerializeField] private string m_particles;
+	[SerializeField] private Sprite m_biggerSawSprite;
+	[SerializeField] private Sprite m_strongerSawSprite;
+	[SerializeField] private Sprite m_fasterSawSprite;
+	[SerializeField] private Sprite m_newSawSprite;
+	[SerializeField] private Sprite m_blueTileSprite;
+	[SerializeField] private Sprite m_greenTileSprite;
+	[SerializeField] private Sprite m_pinkTileSprite;
+	[SerializeField] private Sprite m_redTileSprite;
+	[SerializeField] private Sprite m_whiteTileSprite;
+	[SerializeField] private Sprite m_yellowTileSprite;
+	[SerializeField] private GameObject m_particles;
 	[SerializeField] private int m_xp;
 
-	public string BLUE_TILE_SPRITE {
+	public Sprite BLUE_TILE_SPRITE {
 		get { return m_blueTileSprite; }
 	}
-	public string GREEN_TILE_SPRITE {
+	public Sprite GREEN_TILE_SPRITE {
 		get { return m_greenTileSprite; }
 	}
-	public string PINK_TILE_SPRITE {
+	public Sprite PINK_TILE_SPRITE {
 		get { return m_pinkTileSprite; }
 	}
-	public string RED_TILE_SPRITE {
+	public Sprite RED_TILE_SPRITE {
 		get { return m_redTileSprite; }
 	}
-	public string WHITE_TILE_SPRITE {
+	public Sprite WHITE_TILE_SPRITE {
 		get { return m_whiteTileSprite; }
 	}
-	public string YELLOW_TILE_SPRITE {
+	public Sprite YELLOW_TILE_SPRITE {
 		get { return m_yellowTileSprite; }
 	}
-	public string DEFAULT_PARTICLES {
+	public GameObject DEFAULT_PARTICLES {
 		get { return m_particles; }
 	}
 
@@ -58,7 +58,7 @@ public class Constants : ScriptableObject
 		get { return m_xp; }
 	}
 	
-	public string GetWeaponPlacementSprite(WeaponChoice choice)
+	public Sprite GetWeaponPlacementSprite(WeaponChoice choice)
 	{
 		switch(choice)
 		{
@@ -71,11 +71,11 @@ public class Constants : ScriptableObject
 			case WeaponChoice.NewSaw:
 				return m_newSawSprite;
 			default:
-				return "";
+				return null;
 		}
 	}
 
-	public string GetColor(TileColor col)
+	public Sprite GetColor(TileColor col)
 	{
 		switch(col)
 		{
@@ -92,7 +92,7 @@ public class Constants : ScriptableObject
 			case TileColor.YELLOW:
 				return m_yellowTileSprite;
 			default:
-				return "";
+				return null;
 		}
 
 	}

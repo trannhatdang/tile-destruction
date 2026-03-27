@@ -22,6 +22,7 @@ public class GameManager : MonoBehaviour
 	[SerializeField] int m_objIndex;
 	[SerializeField] int m_xp;
 	[SerializeField] int m_currLevel = 1;
+	[SerializeField] int m_k = 4;
 	bool m_sceneLoading = false;
 
 	private List<TileObjectSO> m_objects;
@@ -40,7 +41,7 @@ public class GameManager : MonoBehaviour
 		Pause();
 		//LOADING SCREEN LOGIC HERE
 		
-		for(int k = 0; k < 4; ++k)
+		for(int k = 0; k < m_k; ++k)
 		{
 			for(int i = 0; i < m_objects.Count; ++i)
 			{
@@ -108,7 +109,18 @@ public class GameManager : MonoBehaviour
 
 	void NextLevel()
 	{
-		SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+		StartCoroutine(LoadSceneAsync());
+	}
+
+	IEnumerator LoadSceneAsync()
+	{
+		AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(SceneManager.GetActiveScene().buildIndex + 1);
+
+		// Wait until the asynchronous scene fully loads
+		while (!asyncLoad.isDone)
+		{
+		    yield return null;
+		}
 	}
 
 	public void Pause()

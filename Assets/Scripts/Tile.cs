@@ -74,7 +74,7 @@ public class Tile : MonoBehaviour
 				m_spr = GetComponent<SpriteRenderer>();
 			}
 
-			m_spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
+			m_spr.sprite = Constants.Instance.GetColor(m_col);
 		}
 	}
 
@@ -93,7 +93,7 @@ public class Tile : MonoBehaviour
 				left.transform.parent = transform.parent;
 
 				var spr = left.AddComponent<SpriteRenderer>();
-				spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
+				spr.sprite = Constants.Instance.GetColor(m_col);
 				var rb = left.AddComponent<Rigidbody2D>();
 				rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 				rb.angularDrag = 0;
@@ -128,7 +128,7 @@ public class Tile : MonoBehaviour
 				right.transform.parent = transform.parent;
 
 				var spr = right.AddComponent<SpriteRenderer>();
-				spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
+				spr.sprite = Constants.Instance.GetColor(m_col);
 				var rb = right.AddComponent<Rigidbody2D>();
 				rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 				rb.angularDrag = 0;
@@ -163,7 +163,7 @@ public class Tile : MonoBehaviour
 				top.transform.parent = transform.parent;
 
 				var spr = top.AddComponent<SpriteRenderer>();
-				spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
+				spr.sprite = Constants.Instance.GetColor(m_col);
 				var rb = top.AddComponent<Rigidbody2D>();
 				rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 				rb.angularDrag = 0;
@@ -198,7 +198,7 @@ public class Tile : MonoBehaviour
 				down.transform.parent = transform.parent;
 
 				var spr = down.AddComponent<SpriteRenderer>();
-				spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
+				spr.sprite = Constants.Instance.GetColor(m_col);
 				var rb = down.AddComponent<Rigidbody2D>();
 				rb.constraints = RigidbodyConstraints2D.FreezeRotation;
 				rb.angularDrag = 0;
@@ -301,7 +301,7 @@ public class Tile : MonoBehaviour
 
 		if(m_spr)
 		{
-			m_spr.sprite = Utils.LoadAsset<Sprite>(Constants.Instance.GetColor(m_col));
+			m_spr.sprite = Constants.Instance.GetColor(m_col);
 		}
 		m_rb = GetComponent<Rigidbody2D>();
 	}
@@ -316,7 +316,7 @@ public class Tile : MonoBehaviour
 
 			if(!m_part)
 			{
-				m_part = Deng.ObjectPoolManager.SpawnObject<ParticleSystem>(Utils.LoadAsset<GameObject>(Constants.Instance.DEFAULT_PARTICLES).GetComponent<ParticleSystem>(), transform.position, Quaternion.identity, Deng.PoolType.ParticleSystems);
+				m_part = Deng.ObjectPoolManager.SpawnObject<ParticleSystem>(Constants.Instance.DEFAULT_PARTICLES.GetComponent<ParticleSystem>(), transform.position, Quaternion.identity, Deng.PoolType.ParticleSystems);
 				m_part.Play();
 			}
 		}
